@@ -1,0 +1,32 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "globalDependencies": [".env*"],
+  "ui": "tui",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build", "generate"],
+      "env": ["APP_*"],
+      "outputs": ["dist/**", "build/**"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!pruned/**",
+        "!Dockerfile",
+        "$TURBO_ROOT$/.github/workflows/**"
+      ]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "generate": {},
+    "test": {},
+    "typecheck": {},
+    "format:check": {},
+    "format": {},
+    "lint": {},
+    "clean": {
+      "cache": false
+    }
+  },
+  "globalEnv": ["BUILD_ENV", "NODE_ENV"]
+}

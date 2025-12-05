@@ -1,0 +1,44 @@
+{
+  "name": "monorepo-template",
+  "private": true,
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "build:stg": "BUILD_ENV=stg turbo run build",
+    "build:prd": "BUILD_ENV=prd turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "format": "turbo run format",
+    "typecheck": "turbo run typecheck",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2",
+    "turbo": "^2.6.3",
+    "typescript": "catalog:",
+    "@tailwindcss/language-server": "^0.14.29",
+    "release-it": "^19.0.6"
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "semi": false,
+    "singleQuote": true,
+    "useTabs": false,
+    "quoteProps": "consistent",
+    "bracketSpacing": true,
+    "arrowParens": "always",
+    "printWidth": 120,
+    "plugins": [
+      "prettier-plugin-sort-imports",
+      "prettier-plugin-tailwindcss"
+    ],
+    "sortingMethod": "lineLength"
+  },
+  "packageManager": "pnpm@10.18.1",
+  "engines": {
+    "node": ">=21",
+    "pnpm": ">=10"
+  }
+}
