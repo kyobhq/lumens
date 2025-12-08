@@ -1,5 +1,5 @@
 {
-  "extends": "@monorepo/typescript-config/tsconfig.adonis.json",
+  "extends": "@lumens/typescript-config/tsconfig.adonis.json",
   "compilerOptions": {
     "rootDir": "./",
     "outDir": "./build"

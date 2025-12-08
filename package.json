@@ -1,5 +1,5 @@
 {
-  "name": "monorepo-template",
+  "name": "@kyobhq/lumens",
   "private": true,
   "scripts": {
     "dev": "turbo run dev",

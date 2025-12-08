@@ -34,8 +34,8 @@
     "#config/*": "./config/*.js"
   },
   "devDependencies": {
-    "@monorepo/eslint-config": "workspace:*",
-    "@monorepo/typescript-config": "workspace:*",
+    "@lumens/eslint-config": "workspace:*",
+    "@lumens/typescript-config": "workspace:*",
     "@adonisjs/assembler": "^7.8.2",
     "@adonisjs/eslint-config": "^2.0.0",
     "@adonisjs/prettier-config": "^1.4.4",

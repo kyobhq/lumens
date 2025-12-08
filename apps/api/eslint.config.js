@@ -1,4 +1,4 @@
-import { configAdonis } from '@monorepo/eslint-config/adonis'
+import { configAdonis } from '@lumens/eslint-config/adonis'
 
 export default configAdonis({
   languageOptions: {

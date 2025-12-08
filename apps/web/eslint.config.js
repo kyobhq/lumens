@@ -2,7 +2,7 @@ import { fileURLToPath } from 'node:url';
 import { includeIgnoreFile } from '@eslint/compat';
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
-import { config as svelteConfig } from '@monorepo/eslint-config/svelte';
+import { config as svelteConfig } from '@lumens/eslint-config/svelte';
 
 const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url));
 

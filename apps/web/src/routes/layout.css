@@ -1,1 +1,63 @@
 @import 'tailwindcss';
+
+:root {
+	--lu-main-900: oklch(0.2011 0.0049 286);
+	--lu-main-800: oklch(0.2448 0.0056 286);
+	--lu-main-700: oklch(0.2744 0.0073 286);
+	--lu-main-600: oklch(0.3317 0.0122 286);
+	--lu-main-500: oklch(0.4604 0.0161 286);
+	--lu-main-400: oklch(0.5975 0.0196 286);
+	--lu-main-300: oklch(0.7536 0.0128 286);
+	--lu-main-200: oklch(0.9197 0.004 286);
+	--lu-main-100: oklch(0.9851 0 286);
+
+	--lu-accent-100: oklch(0.6347 0.2015 37.41);
+}
+
+.light {
+}
+
+@theme {
+	--font-inter: 'Inter Variable', sans-serif;
+
+	--color-lu-main-900: var(--lu-main-900);
+	--color-lu-main-800: var(--lu-main-800);
+	--color-lu-main-700: var(--lu-main-700);
+	--color-lu-main-600: var(--lu-main-600);
+	--color-lu-main-500: var(--lu-main-500);
+	--color-lu-main-400: var(--lu-main-400);
+	--color-lu-main-300: var(--lu-main-300);
+	--color-lu-main-200: var(--lu-main-200);
+	--color-lu-main-100: var(--lu-main-100);
+
+	--color-lu-accent-100: var(--lu-accent-100);
+
+	--font-weight-lu-medium: 440;
+	--font-weight-lu-medium-lg: 465;
+	--font-weight-lu-semibold: 520;
+
+	--radius-max-lg: 0.625rem;
+
+	--default-transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+html,
+body {
+	color: var(--color-lu-main-100);
+	background-color: var(--color-lu-main-900);
+	font-family: var(--font-inter);
+	letter-spacing: -0.02em;
+}
+
+button {
+	cursor: default;
+}
+
+.transition-lu-colors {
+	transition-property:
+		color, background-color, border-color, outline-color, text-decoration-color, fill, stroke,
+		--tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
+	transition-timing-function: var(--default-transition-timing-function);
+	transition-duration: 50ms;
+	transition-delay: 25ms;
+}
