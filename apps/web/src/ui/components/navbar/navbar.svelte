@@ -6,6 +6,7 @@
 	import { Button } from 'bits-ui';
 	import type { Component } from 'svelte';
 	import ChatBubble from 'ui/icons/chat-bubble.svelte';
+	import Gear from 'ui/icons/gear.svelte';
 	import Picture from 'ui/icons/picture.svelte';
 	import Lumens from 'ui/logos/lumens.svelte';
 </script>
@@ -15,11 +16,17 @@
 		<Lumens class="text-lu-main-100" width={28} height={14} />
 	</div>
 
-	<div class="p-2">
+	<div class="p-2 flex flex-col justify-between flex-1">
 		<div class="p-1 bg-lu-main-800 rounded-lg flex flex-col gap-y-0.5">
 			{@render navButton(ChatBubble, '/c')}
 			{@render navButton(Picture, '/g')}
 		</div>
+
+		<Button.Root
+			class="w-full aspect-square flex justify-center items-center text-lu-main-400 transition-lu-colors hover:text-lu-main-200"
+		>
+			<Gear height={24} width={24} />
+		</Button.Root>
 	</div>
 </nav>
 
