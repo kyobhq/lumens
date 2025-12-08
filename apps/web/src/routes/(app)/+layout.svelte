@@ -8,5 +8,7 @@
 <div class="w-screen h-screen overflow-hidden flex">
 	<Navbar />
 	<Sidebar />
-	{@render children()}
+	<main class="flex-1 h-full overflow-hidden">
+		{@render children()}
+	</main>
 </div>

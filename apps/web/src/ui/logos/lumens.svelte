@@ -4,7 +4,6 @@
 	const { height = 11, width = 24, class: classes }: IconProps = $props();
 </script>
 
-<h1 class="sr-only">Lumens</h1>
 <svg
 	{width}
 	{height}

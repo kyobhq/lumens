@@ -4,7 +4,14 @@
 	const { height = 24, width = 24, class: classes }: IconProps = $props();
 </script>
 
-<svg xmlns="http://www.w3.org/2000/svg" {width} {height} class={classes} viewBox="0 0 24 24">
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	{width}
+	{height}
+	class={classes}
+	viewBox="0 0 24 24"
+	aria-hidden="true"
+>
 	<path
 		fill="none"
 		stroke="currentColor"
