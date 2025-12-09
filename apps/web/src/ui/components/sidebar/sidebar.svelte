@@ -12,7 +12,7 @@
 	>
 		Conversations
 	</h2>
-	<div class="flex flex-col pt-2.5 px-2.5 flex-1">
+	<div class="flex flex-col pt-2.5 px-1.5 flex-1">
 		<LumensSearchBar />
 
 		<SidebarSection title="Lumens">

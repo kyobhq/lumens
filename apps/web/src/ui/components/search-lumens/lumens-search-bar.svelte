@@ -5,7 +5,7 @@
 </script>
 
 <Button.Root
-	class="group text-left bg-lu-main-800 pl-2.5 pr-3 py-2 text-sm text-lu-main-500 rounded-lg font-lu-medium flex justify-between items-center hover:bg-lu-main-700 hover:text-lu-main-400 transition-lu-colors"
+	class="group text-left bg-lu-main-800 pl-2.5 pr-3 py-2 text-sm text-lu-main-500 rounded-lg font-lu-medium flex justify-between items-center hover:bg-lu-main-700 hover:text-lu-main-400 transition-lu-colors mx-1"
 	aria-keyshortcuts="Meta+K"
 >
 	<div class="flex items-center gap-x-2.5">

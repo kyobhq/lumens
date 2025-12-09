@@ -16,8 +16,8 @@
 
 <Button.Root
 	class={[
-		'text-left flex items-center gap-x-2.5 p-1 rounded-xl w-full group transition-lu-colors',
-		active ? 'bg-lu-main-700 hover:bg-lu-main-600/75' : 'hover:bg-lu-main-700'
+		'text-left flex items-center gap-x-2.5 p-2 rounded-xl w-full group transition-lu-colors',
+		active ? 'bg-lu-main-800 hover:bg-lu-main-700/75' : 'hover:bg-lu-main-700'
 	]}
 	onmousedown={() => goto(resolve('/(app)/c/[slug]', { slug }))}
 >
