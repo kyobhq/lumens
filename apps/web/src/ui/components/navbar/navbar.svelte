@@ -41,7 +41,7 @@
 	<Button.Root
 		class={[
 			'aspect-square w-full flex items-center justify-center rounded-md transition-lu-colors',
-			page.url.pathname === path
+			page.url.pathname.includes(path)
 				? 'bg-lu-main-600 text-lu-main-200'
 				: 'text-lu-main-400 hover:text-lu-main-300'
 		]}
