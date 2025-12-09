@@ -11,10 +11,17 @@
 	--lu-main-200: oklch(0.9197 0.004 286);
 	--lu-main-100: oklch(0.9851 0 286);
 
-	--lu-accent-100: oklch(0.6347 0.2015 37.41);
+	--lu-accent-100: oklch(0.9364 0.0961 191.6);
+
+	--lu-selection-fg: oklch(0.9364 0.0961 191.6);
+	--lu-selection-bg: oklch(0.9364 0.0961 191.6 / 0.15);
 }
 
 .light {
+}
+
+* {
+	caret-color: var(--lu-accent-100);
 }
 
 @theme {
@@ -72,4 +79,14 @@ button {
 
 .tiptap:focus {
 	outline: 0px;
+}
+
+::-moz-selection {
+	color: var(--lu-selection-fg);
+	background: var(--lu-selection-bg);
+}
+
+::selection {
+	color: var(--lu-selection-fg);
+	background: var(--lu-selection-bg);
 }
