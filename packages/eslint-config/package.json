@@ -5,6 +5,7 @@
   "type": "module",
   "exports": {
     ".": "./base.js",
+    "./package": "./package.js",
     "./svelte": "./svelte.js",
     "./adonis": "./adonis.js"
   },

@@ -1,0 +1,54 @@
+{
+  "name": "@lumens/common",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write --ignore-path=../../.prettierignore .",
+    "format:check": "prettier --check --ignore-path=../../.prettierignore .",
+    "clean": "rm -rf node_modules dist"
+  },
+  "exports": {
+    "./apis/user": "./src/apis/user.ts",
+    "./apis/lumen": "./src/apis/lumen.ts",
+    "./apis/message": "./src/apis/message.ts",
+    "./types": "./src/types.ts",
+    "./package.json": "./package.json"
+  },
+  "imports": {
+    "#apis/*": "./src/apis/*.js",
+    "#types": "./src/types.js"
+  },
+  "dependencies": {
+    "@vinejs/vine": "catalog:",
+    "radashi": "catalog:",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@lumens/eslint-config": "workspace:*",
+    "@lumens/typescript-config": "workspace:*",
+    "@types/luxon": "^3.7.1",
+    "eslint": "^9.39.1",
+    "vitest": "^4.0.10"
+  },
+  "peerDependencies": {
+    "luxon": "^3.6.1",
+    "superjson": "^2.2.2"
+  },
+  "publishConfig": {
+    "exports": {
+      "./apis/user": "./dist/apis/user.mjs",
+      "./apis/lumen": "./dist/apis/lumen.ts",
+      "./apis/message": "./dist/apis/message.ts",
+      "./types": "./dist/types.mjs",
+      "./package.json": "./package.json"
+    }
+  }
+}

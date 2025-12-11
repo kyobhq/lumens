@@ -6,9 +6,9 @@ const authConfig = defineConfig({
   default: 'web',
   guards: {
     web: sessionGuard({
-      useRememberMeTokens: false,
+      useRememberMeTokens: true,
       provider: sessionUserProvider({
-        model: () => import('#models/user')
+        model: () => import('../app/modules/users/models/user.js'),
       }),
     }),
   },
@@ -26,3 +26,4 @@ declare module '@adonisjs/auth/types' {
 declare module '@adonisjs/core/types' {
   interface EventsList extends InferAuthEvents<Authenticators> {}
 }
+

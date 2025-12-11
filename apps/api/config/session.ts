@@ -42,7 +42,8 @@ const sessionConfig = defineConfig({
    */
   stores: {
     cookie: stores.cookie(),
-  }
+  },
 })
 
 export default sessionConfig
+
