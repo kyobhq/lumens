@@ -110,7 +110,6 @@ export const RULES_LIST = {
   ...eslintPluginPrettierRecommended.rules,
   "prettier/prettier": ["error", { endOfLine: "auto" }],
 
-  "turbo/no-undeclared-env-vars": "warn",
   "@typescript-eslint/no-floating-promises": [
     "error",
     { checkThenables: false },
