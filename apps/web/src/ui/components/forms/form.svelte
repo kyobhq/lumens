@@ -1,7 +1,7 @@
 <script lang="ts" module>
 	import type { Snippet } from 'svelte';
 	import type { HTMLFormAttributes } from 'svelte/elements';
-	import type { AnyValidator, FormContext, InferOutput } from './form-utils.js';
+	import type { AnyValidator, FormContext, InferOutput } from './form-utils.svelte';
 
 	export type FormProps<V extends AnyValidator> = {
 		of: FormContext<V>;

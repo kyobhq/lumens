@@ -1,6 +1,12 @@
 <script lang="ts" module>
 	import type { Snippet } from 'svelte';
-	import type { AnyValidator, FieldState, FieldValidationMode, FormContext, InferOutput } from './form-utils.js';
+	import type {
+		AnyValidator,
+		FieldState,
+		FieldValidationMode,
+		FormContext,
+		InferOutput
+	} from './form-utils.svelte';
 
 	export type FieldProps<V extends AnyValidator> = {
 		of: FormContext<V>;
@@ -57,8 +63,8 @@
 				'aria-invalid': hasErrors,
 				'aria-describedby': hasErrors ? errorId : undefined,
 				onblur: handleBlur,
-				oninput: handleInput,
-			},
+				oninput: handleInput
+			}
 		};
 	});
 </script>
