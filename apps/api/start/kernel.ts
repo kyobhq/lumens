@@ -10,6 +10,18 @@
 
 import router from '@adonisjs/core/services/router'
 import server from '@adonisjs/core/services/server'
+import User from '#modules/users/models/user'
+import { HttpContext } from '@adonisjs/core/http'
+
+declare module '@adonisjs/core/http' {
+  export interface HttpContext {
+    caller: User
+  }
+}
+
+HttpContext.getter('caller', function (this: HttpContext) {
+  return this.auth.user!
+})
 
 /**
  * The error handler is used to convert an exception
@@ -32,7 +44,11 @@ server.use([
  * The router middleware stack runs middleware on all the HTTP
  * requests with a registered route.
  */
-router.use([() => import('@adonisjs/core/bodyparser_middleware'), () => import('@adonisjs/session/session_middleware'), () => import('@adonisjs/auth/initialize_auth_middleware')])
+router.use([
+  () => import('@adonisjs/core/bodyparser_middleware'),
+  () => import('@adonisjs/session/session_middleware'),
+  () => import('@adonisjs/auth/initialize_auth_middleware'),
+])
 
 /**
  * Named middleware collection must be explicitly assigned to
@@ -40,5 +56,5 @@ router.use([() => import('@adonisjs/core/bodyparser_middleware'), () => import('
  */
 export const middleware = router.named({
   guest: () => import('#middleware/guest_middleware'),
-  auth: () => import('#middleware/auth_middleware')
+  auth: () => import('#middleware/auth_middleware'),
 })

@@ -1,8 +1,0 @@
-{
-  "extends": "@lumens/typescript-config/tsconfig.library.json",
-  "compilerOptions": {
-    "rootDir": "./",
-    "outDir": "./dist"
-  },
-  "exclude": ["node_modules", "**/*.spec.ts", "dist"]
-}

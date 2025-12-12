@@ -1,5 +1,5 @@
 {
-  "name": "api",
+  "name": "@lumens/api",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -14,6 +14,9 @@
     "format:check": "prettier --check --ignore-path=../../.prettierignore .",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf node_modules build"
+  },
+  "exports": {
+    "./tuyau": "./.adonisjs/index.ts"
   },
   "imports": {
     "#modules/*": "./app/modules/*.js",
@@ -35,8 +38,6 @@
     "#config/*": "./config/*.js"
   },
   "devDependencies": {
-    "@lumens/eslint-config": "workspace:*",
-    "@lumens/typescript-config": "workspace:*",
     "@adonisjs/assembler": "^7.8.2",
     "@adonisjs/eslint-config": "^2.0.0",
     "@adonisjs/prettier-config": "^1.4.4",
@@ -45,7 +46,10 @@
     "@japa/assert": "^4.0.1",
     "@japa/plugin-adonisjs": "^4.0.0",
     "@japa/runner": "^4.2.0",
+    "@lumens/eslint-config": "workspace:*",
+    "@lumens/typescript-config": "workspace:*",
     "@swc/core": "1.11.24",
+    "@tuyau/utils": "^0.0.9",
     "@types/luxon": "^3.7.1",
     "@types/node": "^22.15.18",
     "eslint": "^9.26.0",
@@ -53,7 +57,7 @@
     "pino-pretty": "^13.0.0",
     "prettier": "^3.5.3",
     "ts-node-maintained": "^10.9.5",
-    "typescript": "~5.8"
+    "typescript": "catalog:"
   },
   "dependencies": {
     "@adonisjs/auth": "^9.4.0",
@@ -61,11 +65,11 @@
     "@adonisjs/cors": "^2.2.1",
     "@adonisjs/lucid": "^21.6.1",
     "@adonisjs/session": "^7.5.1",
-    "@vinejs/vine": "^3.0.1",
+    "@tuyau/core": "^0.4.2",
+    "@vinejs/vine": "catalog:",
     "luxon": "^3.7.2",
     "pg": "^8.16.3",
-    "reflect-metadata": "^0.2.2",
-    "@lumens/common": "workspace:*"
+    "reflect-metadata": "^0.2.2"
   },
   "hotHook": {
     "boundaries": [
