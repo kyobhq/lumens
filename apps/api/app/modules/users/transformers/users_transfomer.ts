@@ -10,3 +10,5 @@ export class UsersTransformer {
     }
   }
 }
+
+export type UserTransformer = ReturnType<typeof UsersTransformer.toJson>

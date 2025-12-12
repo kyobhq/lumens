@@ -2,8 +2,11 @@
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import '@fontsource-variable/inter';
+	import { initAuthStore } from '$lib/stores/auth.svelte';
 
 	let { children } = $props();
+
+	initAuthStore();
 </script>
 
 <svelte:head>

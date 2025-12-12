@@ -16,7 +16,9 @@
     "clean": "rm -rf node_modules build"
   },
   "exports": {
-    "./tuyau": "./.adonisjs/index.ts"
+    "./tuyau": "./.adonisjs/index.ts",
+    "./types": "./app/types.ts",
+    "./validators/users": "./app/modules/users/validators.ts"
   },
   "imports": {
     "#modules/*": "./app/modules/*.js",
