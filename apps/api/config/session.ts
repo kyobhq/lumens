@@ -16,7 +16,7 @@ const sessionConfig = defineConfig({
    * Define how long to keep the session data alive without
    * any activity.
    */
-  age: '2h',
+  age: '30 days',
 
   /**
    * Configuration for session cookie and the
@@ -46,4 +46,3 @@ const sessionConfig = defineConfig({
 })
 
 export default sessionConfig
-

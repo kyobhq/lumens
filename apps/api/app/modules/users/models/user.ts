@@ -3,11 +3,10 @@ import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
 import Lumen from '#modules/lumens/models/lumens'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
 import { DbRememberMeTokensProvider } from '@adonisjs/auth/session'
+import { compose } from '@adonisjs/core/helpers'
+import { CuidPk } from '#mixins/cuid_pk'
 
-export default class User extends BaseModel {
-  @column({ isPrimary: true })
-  declare id: string
-
+export default class User extends compose(BaseModel, CuidPk) {
   @column()
   declare username: string
 

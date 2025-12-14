@@ -19,7 +19,7 @@ declare module '@adonisjs/core/http' {
   }
 }
 
-HttpContext.getter('caller', function (this: HttpContext) {
+HttpContext.getter('caller', function(this: HttpContext) {
   return this.auth.user!
 })
 
@@ -48,6 +48,7 @@ router.use([
   () => import('@adonisjs/core/bodyparser_middleware'),
   () => import('@adonisjs/session/session_middleware'),
   () => import('@adonisjs/auth/initialize_auth_middleware'),
+  () => import('@tuyau/superjson/superjson_middleware')
 ])
 
 /**

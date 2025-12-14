@@ -2,11 +2,10 @@ import { DateTime } from 'luxon'
 import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
 import User from '#modules/users/models/user'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import { compose } from '@adonisjs/core/helpers'
+import { CuidPk } from '#mixins/cuid_pk'
 
-export default class Lumen extends BaseModel {
-  @column({ isPrimary: true })
-  declare id: string
-
+export default class Lumen extends compose(BaseModel, CuidPk) {
   @column()
   declare creator_id: string
 

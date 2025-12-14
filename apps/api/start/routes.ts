@@ -19,8 +19,9 @@ router.get('/', async () => {
 
 router
   .group(() => {
-    router.post('/register', [UsersController, 'createUser'])
+    router.post('/signup', [UsersController, 'createUser'])
     router.post('/signin', [UsersController, 'login'])
+    router.post('/verify-email', [UsersController, 'sendVerificationCode'])
     router.post('/signout', [UsersController, 'logout']).use(middleware.auth())
   })
   .prefix('/v1')

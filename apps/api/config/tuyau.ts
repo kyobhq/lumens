@@ -2,16 +2,14 @@ import { defineConfig } from '@tuyau/core'
 
 const tuyauConfig = defineConfig({
   codegen: {
-    /**
-     * Filters the definitions and named routes to be generated
-     */
-    // definitions: {
-    //  only: [],
-    // }
-    // routes: {
-    //  only: [],
-    // }
-  }
+    routes: {
+      only: [/^\/v1./],
+    },
+    definitions: {
+      only: [/^\/v1./],
+    },
+  },
 })
 
 export default tuyauConfig
+
