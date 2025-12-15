@@ -18,7 +18,12 @@
 
 		const result = await form.validate();
 		if (result.success) {
-			await onsubmit(result.data);
+			form.setSubmitting(true);
+			try {
+				await onsubmit(result.data);
+			} finally {
+				form.setSubmitting(false);
+			}
 		}
 	}
 </script>

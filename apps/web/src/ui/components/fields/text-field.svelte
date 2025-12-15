@@ -1,15 +1,13 @@
 <script lang="ts">
+	import type { HTMLInputAttributes } from 'svelte/elements';
 	import type { FieldState } from '../forms';
 
-	interface TextFieldProps {
+	interface TextFieldProps extends Omit<HTMLInputAttributes, 'id' | 'name' | 'value'> {
 		field: FieldState;
 		label: string;
-		placeholder: string;
-		required?: boolean;
-		type: 'email' | 'text' | 'password';
 	}
 
-	const { field, label, placeholder, required = false, type }: TextFieldProps = $props();
+	const { field, label, required = false, type = 'text', ...restProps }: TextFieldProps = $props();
 </script>
 
 <div class="flex flex-col gap-y-1.5">
@@ -25,12 +23,10 @@
 	</label>
 	<input
 		{...field.props}
+		{...restProps}
 		value={field.input}
 		{type}
-		{placeholder}
+		{required}
 		class="bg-lu-main-800 flex gap-x-3.5 px-3.5 py-3 rounded-xl text-[0.9375rem] items-center overflow-hidden placeholder:text-lu-main-500 w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lu-main-600 transition-shadow duration-100"
 	/>
-	{#if field.errors}
-		<span>{field.errors[0]}</span>
-	{/if}
 </div>

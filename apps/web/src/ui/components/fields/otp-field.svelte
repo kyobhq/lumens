@@ -6,18 +6,21 @@
 
 	interface OTPProps {
 		field: FieldState;
+		label?: string;
 		class?: string;
 	}
 
-	const { field, class: classes }: OTPProps = $props();
+	const { field, label = 'Verification code', class: classes }: OTPProps = $props();
 </script>
 
 <div class={['flex flex-col gap-y-1.5 items-center', classes]}>
+	<label for={field.props.id} class="sr-only">{label}</label>
 	<PinInput.Root
 		class="group/pininput text-foreground has-disabled:opacity-30 flex items-center"
 		maxlength={6}
 		value={field.input}
 		{...field.props}
+		autocomplete="off"
 	>
 		{#snippet children({ cells })}
 			<div class="flex gap-x-1.5">

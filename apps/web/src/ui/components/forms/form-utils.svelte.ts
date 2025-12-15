@@ -39,6 +39,13 @@ export type FormContext<V extends AnyValidator> = {
 	_fieldModes: Record<string, FieldValidationMode>;
 	_formId: string;
 
+	/** Whether the form is currently being submitted */
+	isSubmitting: boolean;
+	/** Whether the form has no validation errors */
+	isValid: boolean;
+	/** Whether any field has been touched */
+	isDirty: boolean;
+
 	getValue: <K extends keyof InferOutput<V>>(field: K) => string;
 	setValue: <K extends keyof InferOutput<V>>(field: K, value: string) => void;
 	getErrors: <K extends keyof InferOutput<V>>(field: K) => string[] | undefined;
@@ -48,6 +55,7 @@ export type FormContext<V extends AnyValidator> = {
 	isTouched: <K extends keyof InferOutput<V>>(field: K) => boolean;
 	validate: () => Promise<{ success: true; data: InferOutput<V> } | { success: false }>;
 	validateField: <K extends keyof InferOutput<V>>(field: K) => Promise<void>;
+	setSubmitting: (value: boolean) => void;
 	reset: () => void;
 };
 
@@ -161,6 +169,10 @@ export function createForm<V extends AnyValidator>(
 		state.isValid = true;
 	}
 
+	function setSubmitting(value: boolean): void {
+		state.isSubmitting = value;
+	}
+
 	return {
 		_validator: validator,
 		get _state() {
@@ -170,6 +182,15 @@ export function createForm<V extends AnyValidator>(
 			return fieldModes;
 		},
 		_formId: formId,
+		get isSubmitting() {
+			return state.isSubmitting;
+		},
+		get isValid() {
+			return state.isValid;
+		},
+		get isDirty() {
+			return Object.keys(state.touched).length > 0;
+		},
 		getValue,
 		setValue,
 		getErrors,
@@ -179,6 +200,7 @@ export function createForm<V extends AnyValidator>(
 		isTouched,
 		validate,
 		validateField,
+		setSubmitting,
 		reset
 	};
 }

@@ -13,15 +13,12 @@ export default class UsersService {
 
   constructor(protected ctx: HttpContext) {}
 
-  async getUser({ id, username_or_email }: { id?: string; username_or_email?: string }) {
+  async getUser({ id, username, email }: { id?: string; email?: string; username?: string }) {
     let user: User | null = null
 
     if (id) user = await User.findBy('id', id)
-    if (username_or_email)
-      user = await User.query()
-        .where('username', username_or_email)
-        .orWhere('email', username_or_email)
-        .first()
+    if (email) user = await User.findBy('email', email)
+    if (username) user = await User.findBy('username', username)
 
     if (!user) throw new UserNotFoundException()
 
@@ -39,23 +36,14 @@ export default class UsersService {
   }
 
   async signinUser(payload: LoginUser) {
-    const user = await this.getUser({ username_or_email: payload.username_or_email })
+    const user = await this.getUser({ email: payload.email })
 
     await this.#verifyCode(user.email, payload.code)
 
     return user
   }
 
-  async sendVerifyEmail({ username_or_email, type }: VerifyEmail) {
-    let email = ''
-
-    if (type === 'signup') email = username_or_email
-
-    if (type === 'signin') {
-      const user = await this.getUser({ username_or_email: username_or_email })
-      email = user.email
-    }
-
+  async sendVerifyEmail({ email }: VerifyEmail) {
     const code = this.#generateCode()
     this.ctx.session.put(UsersService.emailVerificationSessionKey, {
       email,

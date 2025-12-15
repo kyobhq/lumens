@@ -9,16 +9,19 @@
 	import Lumens from 'ui/logos/lumens.svelte';
 
 	let verify = $state(false);
+	let isSendingCode = $state(false);
 
 	const form = createForm(loginUserValidator);
 	const auth = getAuthStore();
 
 	async function handleVerifyEmail() {
-		await auth.verifyEmail({
-			username_or_email: form.getValue('username_or_email'),
-			type: 'signin'
-		});
-		verify = true;
+		isSendingCode = true;
+		try {
+			await auth.verifyEmail({ email: form.getValue('email') });
+			verify = true;
+		} finally {
+			isSendingCode = false;
+		}
 	}
 </script>
 
@@ -45,13 +48,14 @@
 						{/snippet}
 					</Field>
 				{:else}
-					<Field of={form} name="username_or_email" validate="onsubmit">
+					<Field of={form} name="email" validate="onsubmit">
 						{#snippet children(field)}
 							<TextField
 								{field}
+								autocomplete="email"
 								type="text"
-								label="Email or username"
-								placeholder="john.doe@example.com or batman"
+								label="Email"
+								placeholder="john.doe@example.com"
 								required
 							/>
 						{/snippet}
@@ -62,17 +66,21 @@
 			{#if verify}
 				<button
 					type="submit"
-					class="w-full py-3 bg-lu-main-200 rounded-xl mt-8.5 text-lu-main-700 font-medium active:scale-[0.98] transition-transform"
+					disabled={form.isSubmitting}
+					aria-busy={form.isSubmitting}
+					class="w-full py-3 bg-lu-main-200 rounded-xl mt-8.5 text-lu-main-700 font-medium active:scale-[0.98] transition-transform disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
 				>
-					Verify email
+					{form.isSubmitting ? 'Verifying...' : 'Verify email'}
 				</button>
 			{:else}
 				<button
 					type="button"
-					class="w-full py-3 bg-lu-main-200 rounded-xl text-lu-main-700 font-medium active:scale-[0.98] transition-transform mt-8"
+					disabled={isSendingCode}
+					aria-busy={isSendingCode}
+					class="w-full py-3 bg-lu-main-200 rounded-xl text-lu-main-700 font-medium active:scale-[0.98] transition-transform mt-8 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
 					onclick={() => handleVerifyEmail()}
 				>
-					Sign in
+					{isSendingCode ? 'Sending code...' : 'Sign in'}
 				</button>
 			{/if}
 		</Form>

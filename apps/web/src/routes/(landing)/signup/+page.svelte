@@ -9,13 +9,19 @@
 	import Lumens from 'ui/logos/lumens.svelte';
 
 	let verify = $state(false);
+	let isSendingCode = $state(false);
 
 	const form = createForm(createUserValidator);
 	const auth = getAuthStore();
 
 	async function handleVerifyEmail() {
-		await auth.verifyEmail({ username_or_email: form.getValue('email'), type: 'signup' });
-		verify = true;
+		isSendingCode = true;
+		try {
+			await auth.verifyEmail({ email: form.getValue('email') });
+			verify = true;
+		} finally {
+			isSendingCode = false;
+		}
 	}
 </script>
 
@@ -47,6 +53,7 @@
 							<TextField
 								{field}
 								type="email"
+								autocomplete="email"
 								label="Email"
 								placeholder="john.doe@example.com"
 								required
@@ -55,7 +62,14 @@
 					</Field>
 					<Field of={form} name="username" validate="onsubmit">
 						{#snippet children(field)}
-							<TextField {field} type="text" label="Username" placeholder="batman" required />
+							<TextField
+								{field}
+								type="text"
+								autocomplete="username"
+								label="Username"
+								placeholder="batman"
+								required
+							/>
 						{/snippet}
 					</Field>
 				{/if}
@@ -64,17 +78,21 @@
 			{#if verify}
 				<button
 					type="submit"
-					class="w-full py-3 bg-lu-main-200 rounded-xl mt-8 text-lu-main-700 font-medium active:scale-[0.98] transition-transform"
+					disabled={form.isSubmitting}
+					aria-busy={form.isSubmitting}
+					class="w-full py-3 bg-lu-main-200 rounded-xl mt-8 text-lu-main-700 font-medium active:scale-[0.98] transition-transform disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
 				>
-					Verify email
+					{form.isSubmitting ? 'Verifying...' : 'Verify email'}
 				</button>
 			{:else}
 				<button
 					type="button"
-					class="w-full py-3 bg-lu-main-200 rounded-xl mt-8 text-lu-main-700 font-medium active:scale-[0.98] transition-transform"
+					disabled={isSendingCode}
+					aria-busy={isSendingCode}
+					class="w-full py-3 bg-lu-main-200 rounded-xl mt-8 text-lu-main-700 font-medium active:scale-[0.98] transition-transform disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
 					onclick={() => handleVerifyEmail()}
 				>
-					Create your account
+					{isSendingCode ? 'Sending code...' : 'Create your account'}
 				</button>
 			{/if}
 		</Form>
