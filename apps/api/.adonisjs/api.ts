@@ -12,8 +12,8 @@ type V1SignupPost = {
   response: MakeNonSerializedTuyauResponse<import('../app/modules/users/controllers/users_controller.ts').default['createUser'], true>
 }
 type V1SigninPost = {
-  request: unknown
-  response: MakeNonSerializedTuyauResponse<import('../app/modules/users/controllers/users_controller.ts').default['login'], false>
+  request: MakeTuyauRequest<InferInput<typeof import('../app/modules/users/validators.ts')['loginUserValidator']>>
+  response: MakeNonSerializedTuyauResponse<import('../app/modules/users/controllers/users_controller.ts').default['login'], true>
 }
 type V1VerifyemailPost = {
   request: MakeTuyauRequest<InferInput<typeof import('../app/modules/users/validators.ts')['verifyEmailValidator']>>
@@ -22,6 +22,10 @@ type V1VerifyemailPost = {
 type V1SignoutPost = {
   request: unknown
   response: MakeNonSerializedTuyauResponse<import('../app/modules/users/controllers/users_controller.ts').default['logout'], false>
+}
+type V1CheckGetHead = {
+  request: unknown
+  response: MakeNonSerializedTuyauResponse<import('../app/modules/users/controllers/users_controller.ts').default['check'], false>
 }
 export interface ApiDefinition {
   'v1': {
@@ -44,6 +48,12 @@ export interface ApiDefinition {
       '$url': {
       };
       '$post': V1SignoutPost;
+    };
+    'check': {
+      '$url': {
+      };
+      '$get': V1CheckGetHead;
+      '$head': V1CheckGetHead;
     };
   };
 }

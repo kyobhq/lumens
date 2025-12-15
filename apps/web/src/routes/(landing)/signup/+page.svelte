@@ -14,7 +14,7 @@
 	const auth = getAuthStore();
 
 	async function handleVerifyEmail() {
-		await auth.verifyEmail({ email: form.getValue('email') });
+		await auth.verifyEmail({ username_or_email: form.getValue('email'), type: 'signup' });
 		verify = true;
 	}
 </script>

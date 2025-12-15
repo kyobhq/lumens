@@ -22,6 +22,8 @@ router
     router.post('/signup', [UsersController, 'createUser'])
     router.post('/signin', [UsersController, 'login'])
     router.post('/verify-email', [UsersController, 'sendVerificationCode'])
+
     router.post('/signout', [UsersController, 'logout']).use(middleware.auth())
+    router.get('/check', [UsersController, 'check']).use(middleware.auth())
   })
   .prefix('/v1')

@@ -25,15 +25,15 @@ export const createUserValidator = vine.create({
 export type CreateUser = Infer<typeof createUserValidator>
 
 export const loginUserValidator = vine.create({
-  username: username.clone().optional(),
-  email: email.clone().optional(),
+  username_or_email: vine.string().trim().minLength(2),
   code: authCode.clone(),
 })
 
 export type LoginUser = Infer<typeof loginUserValidator>
 
 export const verifyEmailValidator = vine.create({
-  email: email.clone(),
+  username_or_email: vine.string().trim().minLength(2),
+  type: vine.enum(['signin', 'signup']),
 })
 
 export type VerifyEmail = Infer<typeof verifyEmailValidator>

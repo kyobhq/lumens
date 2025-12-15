@@ -1,9 +1,10 @@
 import mail from '@adonisjs/mail/services/main'
 import User from '../models/user.js'
-import { CreateUser, VerifyEmail } from '../validators.js'
+import { CreateUser, LoginUser, VerifyEmail } from '../validators.js'
 import { HttpContext } from '@adonisjs/core/http'
 import InvalidVerificationCodeException from '../exceptions/invalid_verification_code_exception.js'
 import { inject } from '@adonisjs/core'
+import UserNotFoundException from '../exceptions/user_not_found_exception.js'
 
 @inject()
 export default class UsersService {
@@ -12,12 +13,65 @@ export default class UsersService {
 
   constructor(protected ctx: HttpContext) {}
 
-  async getUser(userId: string) {
-    const user = await User.findByOrFail('id', userId)
+  async getUser({ id, username_or_email }: { id?: string; username_or_email?: string }) {
+    let user: User | null = null
+
+    if (id) user = await User.findBy('id', id)
+    if (username_or_email)
+      user = await User.query()
+        .where('username', username_or_email)
+        .orWhere('email', username_or_email)
+        .first()
+
+    if (!user) throw new UserNotFoundException()
+
     return user
   }
 
   async createUser({ code, ...userPayload }: CreateUser) {
+    await this.#verifyCode(userPayload.email, code)
+
+    const user = await User.create({
+      ...userPayload,
+      avatar: `https://api.dicebear.com/9.x/glass/svg?seed=${userPayload.username}`,
+    })
+    return user
+  }
+
+  async signinUser(payload: LoginUser) {
+    const user = await this.getUser({ username_or_email: payload.username_or_email })
+
+    await this.#verifyCode(user.email, payload.code)
+
+    return user
+  }
+
+  async sendVerifyEmail({ username_or_email, type }: VerifyEmail) {
+    let email = ''
+
+    if (type === 'signup') email = username_or_email
+
+    if (type === 'signin') {
+      const user = await this.getUser({ username_or_email: username_or_email })
+      email = user.email
+    }
+
+    const code = this.#generateCode()
+    this.ctx.session.put(UsersService.emailVerificationSessionKey, {
+      email,
+      code,
+      expiresAt: Date.now() + UsersService.EMAIL_CODE_EXPIRY_MS,
+    })
+
+    void mail.sendLater((message) => {
+      message
+        .to(email)
+        .subject(`${code}: Verify your email address`)
+        .text(`To verify your email please use this code: ${code}`)
+    })
+  }
+
+  async #verifyCode(email: string, code: string) {
     const storedData = this.ctx.session.get(UsersService.emailVerificationSessionKey) as
       | { email: string; code: string; expiresAt: number }
       | undefined
@@ -31,31 +85,11 @@ export default class UsersService {
       throw new InvalidVerificationCodeException()
     }
 
-    if (storedData.email !== userPayload.email || storedData.code !== code) {
+    if (storedData.email !== email || storedData.code !== code) {
       throw new InvalidVerificationCodeException()
     }
 
     this.ctx.session.forget(UsersService.emailVerificationSessionKey)
-
-    const user = await User.create(userPayload)
-    return user
-  }
-
-  async sendVerifyEmail({ email }: VerifyEmail) {
-    const code = this.#generateCode()
-
-    this.ctx.session.put(UsersService.emailVerificationSessionKey, {
-      email,
-      code,
-      expiresAt: Date.now() + UsersService.EMAIL_CODE_EXPIRY_MS,
-    })
-
-    void mail.sendLater((message) => {
-      message
-        .to(email)
-        .subject(`${code}: Verify your email address`)
-        .text(`To verify your email please use this code: ${code}`)
-    })
   }
 
   #generateCode() {
