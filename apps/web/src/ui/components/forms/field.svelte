@@ -12,19 +12,29 @@
 		of: FormContext<V>;
 		name: keyof InferOutput<V>;
 		validate?: FieldValidationMode;
+		debounce?: number;
 		children: Snippet<[FieldState]>;
 	};
 </script>
 
 <script lang="ts" generics="V extends AnyValidator">
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 
-	let { of: form, name, validate: validateMode, children }: FieldProps<V> = $props();
+	let { of: form, name, validate: validateMode, debounce: debounceMs = 0, children }: FieldProps<V> = $props();
+
+	// Debounce timer
+	let debounceTimer: ReturnType<typeof setTimeout> | undefined = $state();
 
 	// Set field-specific validation mode if provided
 	onMount(() => {
 		if (validateMode) {
 			form.setFieldMode(name, validateMode);
+		}
+	});
+
+	onDestroy(() => {
+		if (debounceTimer) {
+			clearTimeout(debounceTimer);
 		}
 	});
 
@@ -44,7 +54,16 @@
 		form.setValue(name, target.value);
 
 		const mode = form.getFieldMode(name);
-		if (mode === 'onchange') {
+		if (mode !== 'onchange') return;
+
+		if (debounceMs > 0) {
+			if (debounceTimer) {
+				clearTimeout(debounceTimer);
+			}
+			debounceTimer = setTimeout(() => {
+				form.validateField(name);
+			}, debounceMs);
+		} else {
 			form.validateField(name);
 		}
 	}
@@ -70,9 +89,3 @@
 </script>
 
 {@render children(fieldState)}
-
-{#if fieldState.errors}
-	<div id={errorId} aria-live="polite" class="sr-only">
-		{fieldState.errors.join(', ')}
-	</div>
-{/if}
