@@ -4,13 +4,23 @@
 
 	type CellProps = PinInputRootSnippetProps['cells'][0];
 
+	type ErrorPlacement = 'below-input';
+
 	interface OTPProps {
 		field: FieldState;
 		label?: string;
+		errorPlacement?: ErrorPlacement;
 		class?: string;
 	}
 
-	const { field, label = 'Verification code', class: classes }: OTPProps = $props();
+	const {
+		field,
+		label = 'Verification code',
+		errorPlacement = 'below-input',
+		class: classes
+	}: OTPProps = $props();
+
+	const errorId = $derived(`${field.props.id}-error`);
 </script>
 
 <div class={['flex flex-col gap-y-1.5 items-center relative', classes]}>
@@ -20,6 +30,7 @@
 		maxlength={6}
 		value={field.input}
 		{...field.props}
+		aria-describedby={field.errors && errorPlacement === 'below-input' ? errorId : undefined}
 		autocomplete="off"
 		autocorrect="off"
 	>
@@ -31,8 +42,8 @@
 			</div>
 		{/snippet}
 	</PinInput.Root>
-	{#if field.errors}
-		<span class="absolute text-red-400 top-[calc(100%+0.5rem)]">{field.errors[0]}</span>
+	{#if field.errors && errorPlacement === 'below-input'}
+		<span id={errorId} class="text-red-400 text-sm mt-1">{field.errors[0]}</span>
 	{/if}
 </div>
 
