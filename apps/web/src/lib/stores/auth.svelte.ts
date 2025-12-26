@@ -5,13 +5,17 @@ import { tuyau } from '$lib/tuyau';
 import type { UserTransformer } from '@lumens/api/types';
 import type { CreateUser, LoginUser, VerifyEmail } from '@lumens/api/validators/users';
 import { getContext, setContext } from 'svelte';
+import { delay } from '$lib/utils/delay';
 import type { AnyValidator, FormContext } from 'ui/components/forms';
+
+const MIN_SUBMIT_DELAY = 500;
 
 class AuthStore {
 	user = $state<UserTransformer | null>(null);
 
 	async signup(payload: CreateUser, form: FormContext<AnyValidator>) {
-		const res = await tuyau.signup.$post(payload);
+		const [res] = await Promise.all([tuyau.signup.$post(payload), delay(MIN_SUBMIT_DELAY)]);
+
 		if (res.error) {
 			form.setErrors(res.error.value);
 			return;
@@ -22,7 +26,8 @@ class AuthStore {
 	}
 
 	async signin(payload: LoginUser, form: FormContext<AnyValidator>) {
-		const res = await tuyau.signin.$post(payload);
+		const [res] = await Promise.all([tuyau.signin.$post(payload), delay(MIN_SUBMIT_DELAY)]);
+
 		if (res.error) {
 			form.setErrors(res.error.value);
 			return;

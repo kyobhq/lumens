@@ -26,8 +26,10 @@
 	}
 </script>
 
-<main class="flex flex-col fixed left-1/2 top-1/2 -translate-1/2 gap-y-5 items-center">
-	<Form of={form} onsubmit={auth.signup}>
+<main
+	class="flex flex-col fixed left-1/2 top-[25%] -translate-x-1/2 gap-y-5 items-center w-full max-w-sm"
+>
+	<Form of={form} onsubmit={auth.signup} class=" w-full">
 		<div
 			class="aspect-square w-11 bg-lu-accent-100 flex items-center justify-center text-lu-main-700 rounded-xl"
 		>
@@ -42,7 +44,7 @@
 			<p class="text-red-400 text-sm mt-3">{form.formError}</p>
 		{/if}
 
-		<div class="mt-5">
+		<div class="space-y-3 mt-5">
 			{#if verify}
 				<Field of={form} name="code" validate="onsubmit">
 					{#snippet children(field)}
@@ -50,7 +52,7 @@
 					{/snippet}
 				</Field>
 			{:else}
-				<Field of={form} name="email" validate="onchange">
+				<Field of={form} name="email" validate="onchange" debounce={300}>
 					{#snippet children(field)}
 						<TextField
 							{field}
@@ -62,7 +64,7 @@
 						/>
 					{/snippet}
 				</Field>
-				<Field of={form} name="username" validate="onchange">
+				<Field of={form} name="username" validate="onchange" debounce={300}>
 					{#snippet children(field)}
 						<TextField
 							{field}
@@ -70,6 +72,7 @@
 							autocomplete="off"
 							label="Username"
 							placeholder="batman"
+							errorPlacement="below-input"
 							required
 						/>
 					{/snippet}

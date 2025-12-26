@@ -26,8 +26,10 @@
 	}
 </script>
 
-<main class="flex flex-col fixed left-1/2 top-1/2 -translate-1/2 gap-y-5 items-center">
-	<Form of={form} onsubmit={auth.signin}>
+<main
+	class="flex flex-col fixed left-1/2 top-[25%] -translate-x-1/2 gap-y-5 items-center w-full max-w-sm"
+>
+	<Form of={form} onsubmit={auth.signin} class="w-full">
 		<div
 			class="aspect-square w-11 bg-lu-accent-100 flex items-center justify-center text-lu-main-700 rounded-xl"
 		>
@@ -50,7 +52,7 @@
 					{/snippet}
 				</Field>
 			{:else}
-				<Field of={form} name="email" validate="onsubmit">
+				<Field of={form} name="email" validate="onchange" debounce={300}>
 					{#snippet children(field)}
 						<TextField
 							{field}

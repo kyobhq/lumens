@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { fadeSlideBlur } from '$lib';
 	import { getLumenStore } from '$lib/stores/lumen.svelte';
 	import { messages } from '$lib/stores/messages.svelte';
 	import { generateHTML } from '@tiptap/core';
@@ -13,14 +14,17 @@
 	class="flex flex-col justify-between h-full w-md bg-lu-main-900 border border-lu-main-800 rounded-max-lg"
 >
 	{#if lumen}
-		<header class="flex flex-col items-center pt-6">
+		<header
+			class="flex flex-col items-center pt-6"
+			transition:fadeSlideBlur={{ blur: 4, duration: 500, y: 0 }}
+		>
 			<img
 				src={`http://localhost:3333${lumen.avatar}`}
 				alt=""
 				class="rounded-full aspect-square w-12 bg-lu-accent-100"
 			/>
 			<p
-				class="text-lu-main-200 bg-lu-main-500/55 backdrop-blur-sm rounded-full px-3 py-0.5 -my-2.5 text-sm"
+				class="text-lu-main-200 bg-lu-main-700 rounded-full px-3 py-0.75 -my-2.5 text-xs border-[0.5px] border-lu-main-600"
 			>
 				{lumen.name ?? 'Lumen'}
 			</p>

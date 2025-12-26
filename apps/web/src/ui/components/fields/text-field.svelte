@@ -28,11 +28,11 @@
 		for={field.props.id}
 		class={[
 			'text-sm ml-2.5 flex items-baseline gap-x-1',
-			field.errors ? 'text-red-400' : 'text-lu-main-400'
+			field.errors && errorPlacement === 'beside-label' ? 'text-red-400' : 'text-lu-main-400'
 		]}
 	>
 		{label}
-		{#if required && !field.errors?.length}
+		{#if (required && !field.errors?.length) || (required && errorPlacement === 'below-input')}
 			<span class="text-lu-accent-100">*</span>
 		{/if}
 
@@ -48,8 +48,10 @@
 		{type}
 		{required}
 		class={[
-			'bg-lu-main-800 flex gap-x-3.5 px-3.5 py-3 rounded-xl text-[0.9375rem] items-center overflow-hidden placeholder:text-lu-main-500 w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lu-main-600 transition-shadow duration-100',
-			field.errors ? 'border border-red-400' : '',
+			'bg-lu-main-800 flex gap-x-3.5 px-3.5 py-3 rounded-xl text-[0.9375rem] items-center overflow-hidden placeholder:text-lu-main-500 w-full focus-visible:outline-none focus-visible:ring-2 transition-shadow duration-100',
+			field.errors
+				? 'inset-shadow-error placeholder:text-red-400/60 ring-red-400/45'
+				: 'ring-lu-main-600',
 			classes
 		]}
 	/>

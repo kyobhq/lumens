@@ -50,6 +50,8 @@
 
 	--default-transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
 	--transition-quint: cubic-bezier(0.86, 0, 0.14, 1);
+
+	--inset-shadow-error: inset 0px 0px 0px 999px rgba(255, 100, 103, 0.15);
 }
 
 html,

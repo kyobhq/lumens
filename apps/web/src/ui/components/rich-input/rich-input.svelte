@@ -12,10 +12,16 @@
 
 	let element: HTMLElement | undefined = $state();
 	let editorState: { editor: Editor | null } = $state({ editor: null });
-	const { user } = getAuthStore();
+
+	const auth = getAuthStore();
+
+	const passedTheOnboarding = $derived.by(() => {
+		if (!auth.user) return true;
+		return !auth.user.lumen_created;
+	});
 
 	function sendMessage(content: JSONContent) {
-		if (!user?.lumen_created) return;
+		if (!passedTheOnboarding) return;
 
 		messages.add({
 			id: crypto.randomUUID(),
@@ -29,7 +35,7 @@
 	onMount(() => {
 		editorState.editor = new Editor({
 			element: element,
-			extensions: [StarterKit, Placeholder.configure({ placeholder: `Send a message` })],
+			extensions: [StarterKit, Placeholder.configure({ placeholder: 'Send a message' })],
 			onTransaction: ({ editor }) => {
 				editorState = { editor };
 			},
