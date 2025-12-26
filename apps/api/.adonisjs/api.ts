@@ -27,6 +27,14 @@ type V1CheckGetHead = {
   request: unknown
   response: MakeNonSerializedTuyauResponse<import('../app/modules/users/controllers/users_controller.ts').default['check'], false>
 }
+type V1LumensGetHead = {
+  request: unknown
+  response: MakeNonSerializedTuyauResponse<import('../app/modules/lumens/controllers/lumens_controller.ts').default['getLumen'], false>
+}
+type V1LumensCreatePost = {
+  request: MakeTuyauRequest<InferInput<typeof import('../app/modules/lumens/validators/server.ts')['createLumenValidator']>>
+  response: MakeNonSerializedTuyauResponse<import('../app/modules/lumens/controllers/lumens_controller.ts').default['createLumen'], true>
+}
 export interface ApiDefinition {
   'v1': {
     'signup': {
@@ -54,6 +62,17 @@ export interface ApiDefinition {
       };
       '$get': V1CheckGetHead;
       '$head': V1CheckGetHead;
+    };
+    'lumens': {
+      '$url': {
+      };
+      '$get': V1LumensGetHead;
+      '$head': V1LumensGetHead;
+      'create': {
+        '$url': {
+        };
+        '$post': V1LumensCreatePost;
+      };
     };
   };
 }

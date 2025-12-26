@@ -18,7 +18,8 @@
   "exports": {
     "./tuyau": "./.adonisjs/index.ts",
     "./types": "./app/types.ts",
-    "./validators/users": "./app/modules/users/validators.ts"
+    "./validators/users": "./app/modules/users/validators.ts",
+    "./validators/lumens": "./app/modules/lumens/validators/base.ts"
   },
   "imports": {
     "#modules/*": "./app/modules/*.js",
@@ -66,9 +67,12 @@
     "@adonisjs/auth": "^9.4.0",
     "@adonisjs/core": "^6.18.0",
     "@adonisjs/cors": "^2.2.1",
+    "@adonisjs/drive": "^3.4.1",
     "@adonisjs/lucid": "^21.6.1",
     "@adonisjs/mail": "^9.2.2",
     "@adonisjs/session": "^7.5.1",
+    "@aws-sdk/client-s3": "^3.958.0",
+    "@aws-sdk/s3-request-presigner": "^3.958.0",
     "@tuyau/core": "^0.4.2",
     "@tuyau/superjson": "^0.1.2",
     "@vinejs/vine": "catalog:",

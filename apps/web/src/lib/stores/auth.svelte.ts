@@ -1,5 +1,6 @@
 import { goto } from '$app/navigation';
 import { resolve } from '$app/paths';
+import { page } from '$app/state';
 import { tuyau } from '$lib/tuyau';
 import type { UserTransformer } from '@lumens/api/types';
 import type { CreateUser, LoginUser, VerifyEmail } from '@lumens/api/validators/users';
@@ -15,7 +16,7 @@ class AuthStore {
 		}
 
 		this.user = res.data;
-		return goto(resolve('/(app)/c'));
+		return goto(resolve('/(app)/home'));
 	}
 
 	async signin(payload: LoginUser) {
@@ -25,15 +26,20 @@ class AuthStore {
 		}
 
 		this.user = res.data;
-		return goto(resolve('/(app)/c'));
+		return goto(resolve('/(app)/home'));
 	}
 
 	async check() {
+		const onLandingPage = page.route.id?.includes('(landing)');
+
 		const res = await tuyau.check.$get();
-		if (res.error) return goto(resolve('/(landing)/signin'));
+		if (res.error) {
+			if (!onLandingPage) return goto(resolve('/(landing)/signin'));
+			return;
+		}
 
 		this.user = res.data;
-		return goto(resolve('/c'));
+		return goto(resolve('/home'));
 	}
 
 	async verifyEmail(payload: VerifyEmail) {

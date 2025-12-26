@@ -7,6 +7,7 @@ export class UsersTransformer {
       username: user.username,
       email: user.email,
       avatar: user.avatar,
+      lumen_created: user.lumen_created,
     }
   }
 }

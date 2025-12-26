@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
-import Lumen from '#modules/lumens/models/lumens'
-import type { HasMany } from '@adonisjs/lucid/types/relations'
+import { BaseModel, column, hasOne } from '@adonisjs/lucid/orm'
+import Lumen from '#modules/lumens/models/lumen'
+import type { HasOne } from '@adonisjs/lucid/types/relations'
 import { DbRememberMeTokensProvider } from '@adonisjs/auth/session'
 import { compose } from '@adonisjs/core/helpers'
 import { CuidPk } from '#mixins/cuid_pk'
@@ -16,8 +16,11 @@ export default class User extends compose(BaseModel, CuidPk) {
   @column()
   declare avatar: string
 
-  @hasMany(() => Lumen)
-  declare lumens: HasMany<typeof Lumen>
+  @column()
+  declare lumen_created: boolean
+
+  @hasOne(() => Lumen)
+  declare lumen: HasOne<typeof Lumen>
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

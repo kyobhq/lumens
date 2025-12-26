@@ -14,7 +14,6 @@ export default class extends BaseSchema {
         .inTable('users')
         .onDelete('CASCADE')
       table.string('name').notNullable()
-      table.string('description').notNullable()
       table.text('personality').notNullable()
       table.text('memory').nullable()
       table.string('avatar').notNullable()

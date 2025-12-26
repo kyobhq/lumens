@@ -9,6 +9,7 @@ export default class extends BaseSchema {
       table.string('username', 64).notNullable().unique()
       table.string('email', 254).notNullable().unique()
       table.string('avatar').nullable()
+      table.boolean('lumen_created').notNullable().defaultTo(false)
 
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()

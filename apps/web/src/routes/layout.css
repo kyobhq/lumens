@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 
 :root {
+	--lu-main-950: oklch(0.1785 0.0041 286);
 	--lu-main-900: oklch(0.2011 0.0049 286);
 	--lu-main-800: oklch(0.2448 0.0056 286);
 	--lu-main-700: oklch(0.2744 0.0073 286);
@@ -11,10 +12,10 @@
 	--lu-main-200: oklch(0.9197 0.004 286);
 	--lu-main-100: oklch(0.9851 0 286);
 
-	--lu-accent-100: oklch(0.9364 0.0961 191.6);
+	--lu-accent-100: oklch(0.6567 0.2311 32.7);
 
-	--lu-selection-fg: oklch(0.9364 0.0961 191.6);
-	--lu-selection-bg: oklch(0.9364 0.0961 191.6 / 0.15);
+	--lu-selection-fg: oklch(0.9197 0.004 286);
+	--lu-selection-bg: oklch(0.6567 0.2311 32.7 / 0.25);
 }
 
 .light {
@@ -26,7 +27,9 @@
 
 @theme {
 	--font-inter: 'Inter Variable', sans-serif;
+	--font-crimson: 'Crimson Pro', serif;
 
+	--color-lu-main-950: var(--lu-main-950);
 	--color-lu-main-900: var(--lu-main-900);
 	--color-lu-main-800: var(--lu-main-800);
 	--color-lu-main-700: var(--lu-main-700);
@@ -52,7 +55,7 @@
 html,
 body {
 	color: var(--color-lu-main-100);
-	background-color: var(--color-lu-main-900);
+	background-color: var(--color-lu-main-950);
 	font-family: var(--font-inter);
 	letter-spacing: -0.02em;
 }

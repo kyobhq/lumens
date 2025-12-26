@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { getAuthStore } from '$lib/stores/auth.svelte';
 	import { loginUserValidator } from '@lumens/api/validators/users';
 	import OtpField from 'ui/components/fields/otp-field.svelte';
@@ -25,70 +26,67 @@
 	}
 </script>
 
-<main
-	class="flex max-w-3xl w-full h-full max-h-115 fixed left-1/2 top-1/2 -translate-1/2 gap-x-8 items-center"
->
-	<div class="w-3/5 relative">
-		<Form of={form} onsubmit={(data) => void auth.signin(data)}>
-			<div
-				class="aspect-square w-11 bg-lu-accent-100 flex items-center justify-center text-lu-main-700 rounded-xl"
-			>
-				<Lumens class="text-current w-full" />
-			</div>
-			<h1 class="text-2xl font-semibold tracking-tighter flex flex-col gap-x-3 mt-4">
-				Sign in to Lumens
-			</h1>
-			<p class="text-lu-main-400 mt-0.5">Welcome to your favorite AI-powered workspace</p>
+<main class="flex flex-col fixed left-1/2 top-1/2 -translate-1/2 gap-y-5 items-center">
+	<Form of={form} onsubmit={(data) => void auth.signin(data)}>
+		<div
+			class="aspect-square w-11 bg-lu-accent-100 flex items-center justify-center text-lu-main-700 rounded-xl"
+		>
+			<Lumens class="text-current w-full" />
+		</div>
+		<h1 class="text-2xl font-semibold tracking-tighter flex flex-col gap-x-3 mt-4 select-none">
+			Sign in to Lumens
+		</h1>
+		<p class="text-lu-main-400 mt-0.5 select-none">Welcome to your favorite AI-powered workspace</p>
 
-			<div class={['space-y-4', verify ? 'mt-8.5' : 'mt-5']}>
-				{#if verify}
-					<Field of={form} name="code" validate="onsubmit">
-						{#snippet children(field)}
-							<OtpField {field} />
-						{/snippet}
-					</Field>
-				{:else}
-					<Field of={form} name="email" validate="onsubmit">
-						{#snippet children(field)}
-							<TextField
-								{field}
-								autocomplete="email"
-								type="text"
-								label="Email"
-								placeholder="john.doe@example.com"
-								required
-							/>
-						{/snippet}
-					</Field>
-				{/if}
-			</div>
-
+		<div class={['space-y-3', verify ? 'mt-8.5' : 'mt-5']}>
 			{#if verify}
-				<button
-					type="submit"
-					disabled={form.isSubmitting}
-					aria-busy={form.isSubmitting}
-					class="w-full py-3 bg-lu-main-200 rounded-xl mt-8.5 text-lu-main-700 font-medium active:scale-[0.98] transition-transform disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
-				>
-					{form.isSubmitting ? 'Verifying...' : 'Verify email'}
-				</button>
+				<Field of={form} name="code" validate="onsubmit">
+					{#snippet children(field)}
+						<OtpField {field} />
+					{/snippet}
+				</Field>
 			{:else}
-				<button
-					type="button"
-					disabled={isSendingCode}
-					aria-busy={isSendingCode}
-					class="w-full py-3 bg-lu-main-200 rounded-xl text-lu-main-700 font-medium active:scale-[0.98] transition-transform mt-8 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
-					onclick={() => handleVerifyEmail()}
-				>
-					{isSendingCode ? 'Sending code...' : 'Sign in'}
-				</button>
+				<Field of={form} name="email" validate="onsubmit">
+					{#snippet children(field)}
+						<TextField
+							{field}
+							autocomplete="email"
+							type="text"
+							label="Email"
+							placeholder="john.doe@example.com"
+							required
+						/>
+					{/snippet}
+				</Field>
 			{/if}
-		</Form>
-	</div>
+		</div>
 
-	<div class="h-full w-px bg-lu-main-700"></div>
+		{#if verify}
+			<button
+				type="submit"
+				disabled={form.isSubmitting}
+				aria-busy={form.isSubmitting}
+				class="w-full py-3 bg-lu-main-200 rounded-xl mt-8.5 text-lu-main-700 font-medium active:scale-[0.98] transition-transform disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
+			>
+				{form.isSubmitting ? 'Verifying...' : 'Verify email'}
+			</button>
+		{:else}
+			<button
+				type="button"
+				disabled={isSendingCode}
+				aria-busy={isSendingCode}
+				class="w-full py-3 bg-lu-main-200 rounded-xl text-lu-main-700 font-medium active:scale-[0.98] transition mt-8 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
+				onclick={() => handleVerifyEmail()}
+			>
+				{isSendingCode ? 'Sending code...' : 'Sign in'}
+			</button>
+		{/if}
+	</Form>
 
-	<figure class="w-2/5 h-full rounded-xl overflow-hidden">
-		<img src="/signup-bg.png" class="w-full h-full object-cover" alt="A man looking at his phone" />
-	</figure>
+	<p class="text-sm text-lu-main-400">
+		Don't have an account? <a
+			href={resolve('/(landing)/signup')}
+			class="text-lu-accent-100 hover:underline">Sign up</a
+		>
+	</p>
 </main>

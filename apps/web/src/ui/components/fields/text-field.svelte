@@ -7,7 +7,14 @@
 		label: string;
 	}
 
-	const { field, label, required = false, type = 'text', ...restProps }: TextFieldProps = $props();
+	const {
+		field,
+		label,
+		required = false,
+		type = 'text',
+		class: classes,
+		...restProps
+	}: TextFieldProps = $props();
 </script>
 
 <div class="flex flex-col gap-y-1.5">
@@ -27,6 +34,9 @@
 		value={field.input}
 		{type}
 		{required}
-		class="bg-lu-main-800 flex gap-x-3.5 px-3.5 py-3 rounded-xl text-[0.9375rem] items-center overflow-hidden placeholder:text-lu-main-500 w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lu-main-600 transition-shadow duration-100"
+		class={[
+			'bg-lu-main-800 flex gap-x-3.5 px-3.5 py-3 rounded-xl text-[0.9375rem] items-center overflow-hidden placeholder:text-lu-main-500 w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lu-main-600 transition-shadow duration-100',
+			classes
+		]}
 	/>
 </div>

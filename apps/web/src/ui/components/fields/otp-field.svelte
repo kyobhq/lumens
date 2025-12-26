@@ -13,7 +13,7 @@
 	const { field, label = 'Verification code', class: classes }: OTPProps = $props();
 </script>
 
-<div class={['flex flex-col gap-y-1.5 items-center', classes]}>
+<div class={['flex flex-col gap-y-1.5 items-center relative', classes]}>
 	<label for={field.props.id} class="sr-only">{label}</label>
 	<PinInput.Root
 		class="group/pininput text-foreground has-disabled:opacity-30 flex items-center"
@@ -21,6 +21,7 @@
 		value={field.input}
 		{...field.props}
 		autocomplete="off"
+		autocorrect="off"
 	>
 		{#snippet children({ cells })}
 			<div class="flex gap-x-1.5">
@@ -31,7 +32,7 @@
 		{/snippet}
 	</PinInput.Root>
 	{#if field.errors}
-		<span>{field.errors[0]}</span>
+		<span class="absolute text-red-400 top-[calc(100%+0.5rem)]">{field.errors[0]}</span>
 	{/if}
 </div>
 
