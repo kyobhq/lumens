@@ -33,6 +33,19 @@ export type FieldState = {
 export type AnyValidator = VineValidator<SchemaTypes, Record<string, any> | undefined>;
 export type InferOutput<V extends AnyValidator> = Infer<V>;
 
+/** Backend error format from AdonisJS/Tuyau validation */
+export type BackendValidationError = {
+	errors: Array<{ field: string; message: string; rule?: string }>;
+};
+
+/** Backend error format from AdonisJS exceptions */
+export type BackendExceptionError = {
+	message: string;
+	code?: string;
+};
+
+export type BackendError = BackendValidationError | BackendExceptionError | string | unknown;
+
 export type FormContext<V extends AnyValidator> = {
 	_validator: V;
 	_state: FormState<InferOutput<V>>;
@@ -45,6 +58,8 @@ export type FormContext<V extends AnyValidator> = {
 	isValid: boolean;
 	/** Whether any field has been touched */
 	isDirty: boolean;
+	/** Global form error (non-field-specific) */
+	formError: string | undefined;
 
 	getValue: <K extends keyof InferOutput<V>>(field: K) => string;
 	setValue: <K extends keyof InferOutput<V>>(field: K, value: string) => void;
@@ -56,6 +71,8 @@ export type FormContext<V extends AnyValidator> = {
 	validate: () => Promise<{ success: true; data: InferOutput<V> } | { success: false }>;
 	validateField: <K extends keyof InferOutput<V>>(field: K) => Promise<void>;
 	setSubmitting: (value: boolean) => void;
+	setErrors: (error: BackendError) => void;
+	clearErrors: () => void;
 	reset: () => void;
 };
 
@@ -167,10 +184,54 @@ export function createForm<V extends AnyValidator>(
 		state.touched = {};
 		state.isSubmitting = false;
 		state.isValid = true;
+		formError = undefined;
 	}
 
 	function setSubmitting(value: boolean): void {
 		state.isSubmitting = value;
+	}
+
+	let formError = $state<string | undefined>(undefined);
+
+	function setErrors(error: BackendError): void {
+		state.errors = {};
+		formError = undefined;
+
+		if (typeof error === 'string') {
+			formError = error;
+			state.isValid = false;
+			return;
+		}
+
+		if (error && typeof error === 'object') {
+			if ('errors' in error && Array.isArray(error.errors)) {
+				const errorsByField: Record<string, string[]> = {};
+				for (const msg of error.errors as Array<{ field: string; message: string }>) {
+					if (!errorsByField[msg.field]) {
+						errorsByField[msg.field] = [];
+					}
+					errorsByField[msg.field].push(msg.message);
+				}
+				state.errors = errorsByField;
+				state.isValid = Object.keys(errorsByField).length === 0;
+				return;
+			}
+
+			if ('message' in error && typeof error.message === 'string') {
+				formError = error.message;
+				state.isValid = false;
+				return;
+			}
+		}
+
+		formError = 'An unexpected error occurred';
+		state.isValid = false;
+	}
+
+	function clearErrors(): void {
+		state.errors = {};
+		formError = undefined;
+		state.isValid = true;
 	}
 
 	return {
@@ -191,6 +252,9 @@ export function createForm<V extends AnyValidator>(
 		get isDirty() {
 			return Object.keys(state.touched).length > 0;
 		},
+		get formError() {
+			return formError;
+		},
 		getValue,
 		setValue,
 		getErrors,
@@ -201,6 +265,8 @@ export function createForm<V extends AnyValidator>(
 		validate,
 		validateField,
 		setSubmitting,
+		setErrors,
+		clearErrors,
 		reset
 	};
 }

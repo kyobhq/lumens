@@ -5,7 +5,7 @@
 
 	export type FormProps<V extends AnyValidator> = {
 		of: FormContext<V>;
-		onsubmit: (data: InferOutput<V>) => void | Promise<void>;
+		onsubmit: (data: InferOutput<V>, form: FormContext<V>) => void | Promise<void>;
 		children: Snippet;
 	} & Omit<HTMLFormAttributes, 'onsubmit'>;
 </script>
@@ -20,7 +20,7 @@
 		if (result.success) {
 			form.setSubmitting(true);
 			try {
-				await onsubmit(result.data);
+				await onsubmit(result.data, form);
 			} finally {
 				form.setSubmitting(false);
 			}

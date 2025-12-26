@@ -5,7 +5,11 @@
 	import ArtifactsSearchBar from 'ui/components/search-artifacts/artifacts-search-bar.svelte';
 
 	const auth = getAuthStore();
-	const newUser = $derived(!auth.user?.lumen_created);
+	let newUser = $derived.by(() => {
+		if (!auth.user) return false;
+
+		return !auth.user.lumen_created;
+	});
 </script>
 
 {#if newUser}

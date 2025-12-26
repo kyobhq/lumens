@@ -18,8 +18,8 @@
 	async function handleVerifyEmail() {
 		isSendingCode = true;
 		try {
-			await auth.verifyEmail({ email: form.getValue('email') });
-			verify = true;
+			const success = await auth.verifyEmail({ email: form.getValue('email') }, form);
+			if (success) verify = true;
 		} finally {
 			isSendingCode = false;
 		}
@@ -27,7 +27,7 @@
 </script>
 
 <main class="flex flex-col fixed left-1/2 top-1/2 -translate-1/2 gap-y-5 items-center">
-	<Form of={form} onsubmit={(data) => void auth.signup(data)}>
+	<Form of={form} onsubmit={auth.signup}>
 		<div
 			class="aspect-square w-11 bg-lu-accent-100 flex items-center justify-center text-lu-main-700 rounded-xl"
 		>
@@ -38,7 +38,11 @@
 		</h1>
 		<p class="text-lu-main-400 mt-0.5 select-none">Welcome to your favorite AI-powered workspace</p>
 
-		<div class="space-y-3 mt-5">
+		{#if form.formError}
+			<p class="text-red-400 text-sm mt-3">{form.formError}</p>
+		{/if}
+
+		<div class="mt-5">
 			{#if verify}
 				<Field of={form} name="code" validate="onsubmit">
 					{#snippet children(field)}
@@ -46,7 +50,7 @@
 					{/snippet}
 				</Field>
 			{:else}
-				<Field of={form} name="email" validate="onsubmit">
+				<Field of={form} name="email" validate="onchange">
 					{#snippet children(field)}
 						<TextField
 							{field}
@@ -58,7 +62,7 @@
 						/>
 					{/snippet}
 				</Field>
-				<Field of={form} name="username" validate="onsubmit">
+				<Field of={form} name="username" validate="onchange">
 					{#snippet children(field)}
 						<TextField
 							{field}
@@ -90,7 +94,7 @@
 				class="w-full py-3 bg-lu-main-200 rounded-xl text-lu-main-700 font-medium active:scale-[0.98] transition mt-8 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
 				onclick={() => handleVerifyEmail()}
 			>
-				{isSendingCode ? 'Sending code...' : 'Create your account'}
+				Create your account
 			</button>
 		{/if}
 	</Form>

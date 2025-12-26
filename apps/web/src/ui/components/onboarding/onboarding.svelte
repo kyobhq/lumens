@@ -6,6 +6,8 @@
 	import TextareaField from '../fields/textarea-field.svelte';
 	import { getLumenStore } from '$lib/stores/lumen.svelte';
 	import { getAuthStore } from '$lib/stores/auth.svelte';
+	import type { FormContext } from '../forms';
+	import { fade } from 'svelte/transition';
 
 	const form = createForm(createLumenValidator);
 	const auth = getAuthStore();
@@ -13,12 +15,14 @@
 
 	let avatar = $state<File | null>(null);
 	let avatarURL = $state<string | null>(null);
+	let avatarError = $state<string | null>(null);
 
 	function handleFile(e: Event) {
 		const target = e.target as HTMLInputElement;
 		const file = target.files?.[0];
 		if (!file) return;
 
+		avatarError = null;
 		avatar = file;
 
 		const reader = new FileReader();
@@ -29,25 +33,49 @@
 		reader.readAsDataURL(file);
 	}
 
-	async function handleSubmit(data: CreateLumen) {
-		const error = await lumen.create(data, avatar);
-		if (error || !auth.user) return;
+	async function handleSubmit(data: CreateLumen, form: FormContext<typeof createLumenValidator>) {
+		avatarError = null;
+		const hasError = await lumen.create(data, avatar, form);
+		if (hasError) {
+			const errors = form.getErrors('avatar' as keyof CreateLumen);
+			if (errors?.length) avatarError = errors[0];
+			return;
+		}
+		if (!auth.user) return;
 		auth.user.lumen_created = true;
 	}
 </script>
 
 <div
 	class="fixed top-0 left-0 w-screen h-screen bg-lu-main-950/80 z-999 flex items-center justify-center"
+	transition:fade={{ duration: 100 }}
 >
 	<div class="w-full max-w-[24rem]">
 		<Form of={form} onsubmit={handleSubmit} class="space-y-4 flex flex-col">
-			<figure
-				class="size-16 rounded-full bg-lu-main-800 border border-lu-main-700 mx-auto relative mb-10 overflow-hidden"
-			>
-				{#if avatarURL}
-					<img src={avatarURL} alt="" class="w-full h-full object-cover" />
+			{#if form.formError}
+				<p class="text-red-400 text-sm text-center">{form.formError}</p>
+			{/if}
+
+			<figure class="flex flex-col items-center mb-10">
+				<div
+					class={[
+						'size-16 rounded-full bg-lu-main-800 border mx-auto relative overflow-hidden',
+						avatarError ? 'border-red-400' : 'border-lu-main-700'
+					]}
+				>
+					{#if avatarURL}
+						<img src={avatarURL} alt="" class="w-full h-full object-cover" />
+					{/if}
+					<input
+						type="file"
+						accept="image/png,image/jpeg,image/jpg,image/avif,image/webp"
+						class="absolute top-0 left-0 inset-0 opacity-0 cursor-pointer"
+						onchange={handleFile}
+					/>
+				</div>
+				{#if avatarError}
+					<span class="text-red-400 text-sm mt-2">{avatarError}</span>
 				{/if}
-				<input type="file" class="absolute top-0 left-0 inset-0 opacity-0" onchange={handleFile} />
 			</figure>
 
 			<Field of={form} name="name">

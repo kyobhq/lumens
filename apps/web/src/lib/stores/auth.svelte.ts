@@ -5,24 +5,27 @@ import { tuyau } from '$lib/tuyau';
 import type { UserTransformer } from '@lumens/api/types';
 import type { CreateUser, LoginUser, VerifyEmail } from '@lumens/api/validators/users';
 import { getContext, setContext } from 'svelte';
+import type { AnyValidator, FormContext } from 'ui/components/forms';
 
 class AuthStore {
 	user = $state<UserTransformer | null>(null);
 
-	async signup(payload: CreateUser) {
+	async signup(payload: CreateUser, form: FormContext<AnyValidator>) {
 		const res = await tuyau.signup.$post(payload);
 		if (res.error) {
-			return res.error.value;
+			form.setErrors(res.error.value);
+			return;
 		}
 
 		this.user = res.data;
 		return goto(resolve('/(app)/home'));
 	}
 
-	async signin(payload: LoginUser) {
+	async signin(payload: LoginUser, form: FormContext<AnyValidator>) {
 		const res = await tuyau.signin.$post(payload);
 		if (res.error) {
-			return res.error.value;
+			form.setErrors(res.error.value);
+			return;
 		}
 
 		this.user = res.data;
@@ -42,11 +45,13 @@ class AuthStore {
 		return goto(resolve('/home'));
 	}
 
-	async verifyEmail(payload: VerifyEmail) {
+	async verifyEmail(payload: VerifyEmail, form: FormContext<AnyValidator>) {
 		const res = await tuyau['verify-email'].$post(payload);
 		if (res.error) {
-			console.error(res.error);
+			form.setErrors(res.error.value);
+			return false;
 		}
+		return true;
 	}
 }
 

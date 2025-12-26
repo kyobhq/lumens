@@ -3,6 +3,9 @@ export { default as Field } from './field.svelte';
 export { createForm } from './form-utils.svelte.js';
 export type {
 	AnyValidator,
+	BackendError,
+	BackendExceptionError,
+	BackendValidationError,
 	FieldState,
 	FieldValidationMode,
 	FormContext,

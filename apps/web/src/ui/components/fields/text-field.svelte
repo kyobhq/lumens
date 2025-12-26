@@ -18,7 +18,13 @@
 </script>
 
 <div class="flex flex-col gap-y-1.5">
-	<label for={field.props.id} class="text-sm text-lu-main-400 ml-2.5 flex items-baseline gap-x-1">
+	<label
+		for={field.props.id}
+		class={[
+			'text-sm ml-2.5 flex items-baseline gap-x-1',
+			field.errors ? 'text-red-400' : 'text-lu-main-400'
+		]}
+	>
 		{label}
 		{#if required && !field.errors?.length}
 			<span class="text-lu-accent-100">*</span>
