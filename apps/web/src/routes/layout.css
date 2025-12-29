@@ -12,10 +12,11 @@
 	--lu-main-200: oklch(0.9197 0.004 286);
 	--lu-main-100: oklch(0.9851 0 286);
 
-	--lu-accent-100: oklch(0.6567 0.2311 32.7);
+	--lu-accent-50: oklch(0.95 0.2079 14.83);
+	--lu-accent-100: oklch(0.6241 0.2079 14.83);
 
 	--lu-selection-fg: oklch(0.9197 0.004 286);
-	--lu-selection-bg: oklch(0.6567 0.2311 32.7 / 0.25);
+	--lu-selection-bg: oklch(0.6241 0.2079 14.83 / 0.25);
 }
 
 .light {
@@ -40,6 +41,7 @@
 	--color-lu-main-200: var(--lu-main-200);
 	--color-lu-main-100: var(--lu-main-100);
 
+	--color-lu-accent-50: var(--lu-accent-50);
 	--color-lu-accent-100: var(--lu-accent-100);
 
 	--font-weight-lu-medium: 440;
@@ -95,4 +97,13 @@ button {
 ::selection {
 	color: var(--lu-selection-fg);
 	background: var(--lu-selection-bg);
+}
+
+.mask-intro {
+	--mask-size: 0%;
+	mask-image: radial-gradient(
+		ellipse var(--mask-size) var(--mask-size) at 50% 50%,
+		#000000 0%,
+		transparent 100%
+	);
 }

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import type { FieldState } from '../forms';
+	import { cn } from 'tailwind-variants';
 
 	type ErrorPlacement = 'below-input' | 'beside-label';
 
@@ -8,6 +9,7 @@
 		field: FieldState;
 		label: string;
 		errorPlacement?: ErrorPlacement;
+		hideLabel?: boolean;
 	}
 
 	const {
@@ -16,6 +18,7 @@
 		errorPlacement = 'beside-label',
 		required = false,
 		type = 'text',
+		hideLabel = false,
 		class: classes,
 		...restProps
 	}: TextFieldProps = $props();
@@ -28,7 +31,8 @@
 		for={field.props.id}
 		class={[
 			'text-sm ml-2.5 flex items-baseline gap-x-1',
-			field.errors && errorPlacement === 'beside-label' ? 'text-red-400' : 'text-lu-main-400'
+			field.errors && errorPlacement === 'beside-label' ? 'text-red-400' : 'text-lu-main-400',
+			hideLabel && 'sr-only!'
 		]}
 	>
 		{label}
@@ -47,13 +51,13 @@
 		value={field.input}
 		{type}
 		{required}
-		class={[
+		class={cn(
 			'bg-lu-main-800 flex gap-x-3.5 px-3.5 py-3 rounded-xl text-[0.9375rem] items-center overflow-hidden placeholder:text-lu-main-500 w-full focus-visible:outline-none focus-visible:ring-2 transition-shadow duration-100',
 			field.errors
 				? 'inset-shadow-error placeholder:text-red-400/60 ring-red-400/45'
 				: 'ring-lu-main-600',
 			classes
-		]}
+		)}
 	/>
 	{#if field.errors && errorPlacement === 'below-input'}
 		<span id={errorId} class="text-red-400 text-sm ml-2.5">{field.errors[0]}</span>
