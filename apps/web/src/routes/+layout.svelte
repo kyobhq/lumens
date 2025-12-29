@@ -14,6 +14,7 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
+	<title>Lumens</title>
 </svelte:head>
 
 {@render children()}

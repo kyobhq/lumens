@@ -21,10 +21,10 @@
 			<img
 				src={`http://localhost:3333${lumen.avatar}`}
 				alt=""
-				class="rounded-full aspect-square w-12 bg-lu-accent-100"
+				class="rounded-full aspect-square w-12 bg-lu-accent-100 select-none"
 			/>
 			<p
-				class="text-lu-main-200 bg-lu-main-700 rounded-full px-3 py-0.75 -my-2.5 text-xs border-[0.5px] border-lu-main-600"
+				class="text-lu-main-200 bg-lu-main-700 rounded-full px-3 py-0.75 -my-2.5 text-xs border-[0.5px] border-lu-main-600 select-none"
 			>
 				{lumen.name ?? 'Lumen'}
 			</p>
