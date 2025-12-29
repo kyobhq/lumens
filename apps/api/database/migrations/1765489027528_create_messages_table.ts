@@ -6,7 +6,7 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.string('id').notNullable().primary()
-      table.string('author_id').notNullable().references('id').inTable('users').onDelete('CASCADE')
+      table.string('author_id').notNullable().index()
       table.jsonb('content').notNullable()
       table.jsonb('mentions').notNullable().defaultTo('[]')
       table.jsonb('attachments').notNullable().defaultTo('[]')
