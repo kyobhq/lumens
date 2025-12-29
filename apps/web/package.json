@@ -51,8 +51,10 @@
 		"@tiptap/starter-kit": "^3.13.0",
 		"@tuyau/client": "^0.2.10",
 		"@tuyau/superjson": "^0.1.2",
+		"@types/three": "^0.182.0",
 		"bits-ui": "^2.14.4",
 		"luxon": "^3.7.2",
-		"runed": "^0.37.0"
+		"runed": "^0.37.0",
+		"three": "^0.182.0"
 	}
 }
