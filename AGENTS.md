@@ -31,4 +31,5 @@ pnpm test         # Run all tests
 - Validators: Define in `validators.ts`, export validator + `Infer` type
 - Services: Business logic, inject `HttpContext` via constructor
 - Controllers: Thin, delegate to services, return transformer output
+- Actions: Pure functions for one-time operations (e.g., `optimize_image.ts`, `get_artifact_type.ts`). Place in `actions/` directory within the module.
 - Stores (web): Class with `$state` fields, context-based init/get functions
