@@ -63,7 +63,7 @@
 		if (artifact.type === 'image' || artifact.type === 'video') {
 			const aspectRatio = imageAspectRatios.get(artifact.id) ?? 1;
 			// Landscape (aspect ratio > 1) spans 2 columns, but only if we have at least 3 columns
-			if (aspectRatio > 1 && cols >= 3) {
+			if (aspectRatio > 1.1 && cols >= 3) {
 				return 2;
 			}
 		}

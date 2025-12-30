@@ -21,12 +21,12 @@ class ArtifactStore {
 			{ ...payload, files: files as any },
 			{ timeout: 45_000 }
 		);
-		if (res.error) {
-			console.error(res.error);
+		if (res.error || res.data.failures.length > 0) {
+			console.error(res.error, res.data?.failures);
 			return;
 		}
 
-		this.artifacts.unshift(res.data);
+		this.artifacts.unshift(...res.data.artifacts);
 	}
 }
 
