@@ -8,9 +8,18 @@
 	import { getArtifactStore } from '$lib/stores/artifacts.svelte';
 	import type { CreateArtifact } from '@lumens/api/validators/artifacts';
 
-	let editorState: { editor: Editor | null } = $state({ editor: null });
-	const keys = new PressedKeys();
+	interface ArtifactDefaultProps {
+		width: number;
+		x: number;
+		y: number;
+	}
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const _props: ArtifactDefaultProps = $props();
+
+	let editorState: { editor: Editor | null } = $state({ editor: null });
+
+	const keys = new PressedKeys();
 	const artifact = getArtifactStore();
 	const isEmpty = $derived(editorState.editor?.isEmpty ?? true);
 	const isSaving = $derived(keys.has('Control', 'Enter'));
@@ -33,7 +42,7 @@
 	}
 </script>
 
-<div class="w-65 h-35 bg-lu-main-800 rounded-max-lg px-4 py-3 border border-lu-main-700 relative">
+<div class="w-full aspect-[65/45] bg-lu-main-800 rounded-max-lg px-4 py-3 border border-lu-main-700 relative">
 	<RichInput bind:editorState />
 
 	{#if !isEmpty}

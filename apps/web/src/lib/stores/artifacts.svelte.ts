@@ -6,7 +6,15 @@ import { getContext, setContext } from 'svelte';
 class ArtifactStore {
 	artifacts = $state<Array<ArtifactTransformer>>([]);
 
-	async get() {}
+	async get() {
+		const res = await tuyau.artifacts.$get();
+		if (res.error) {
+			console.error(res.error);
+			return;
+		}
+
+		this.artifacts = res.data;
+	}
 
 	async create(payload: CreateArtifact, file?: File | null) {
 		const res = await tuyau.artifacts.create.$post({ ...payload, file: file });
@@ -15,7 +23,7 @@ class ArtifactStore {
 			return;
 		}
 
-		this.artifacts.push(res.data);
+		this.artifacts.unshift(res.data);
 	}
 }
 
