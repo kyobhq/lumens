@@ -1,3 +1,4 @@
+import env from '#start/env'
 import Artifact from '../models/artifact.js'
 
 export class ArtifactsTransformer {
@@ -9,7 +10,7 @@ export class ArtifactsTransformer {
       note: artifact.rawNote,
       colors: artifact.colors,
       tags: artifact.tags,
-      url: artifact.url,
+      url: `${env.get('HOST_URL')}${artifact.url}`,
     }
   }
 }

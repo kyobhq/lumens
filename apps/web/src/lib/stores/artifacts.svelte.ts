@@ -16,8 +16,8 @@ class ArtifactStore {
 		this.artifacts = res.data;
 	}
 
-	async create(payload: CreateArtifact, file?: File | null) {
-		const res = await tuyau.artifacts.create.$post({ ...payload, file: file });
+	async create(payload: CreateArtifact, files?: File[] | null) {
+		const res = await tuyau.artifacts.create.$post({ ...payload, files: files as any });
 		if (res.error) {
 			console.error(res.error);
 			return;

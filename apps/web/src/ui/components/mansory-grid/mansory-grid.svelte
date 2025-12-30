@@ -5,6 +5,8 @@
 	import Artifact from '../artifacts/artifact.svelte';
 	import { SvelteMap } from 'svelte/reactivity';
 	import { onMount } from 'svelte';
+	import { createArtifactDropzone } from '$lib/composables/dropzone.svelte';
+	import DropzoneOverlay from '../dropzone/dropzone-overlay.svelte';
 
 	const GAP = 12;
 	const OUTER_GAPS = 24;
@@ -17,6 +19,8 @@
 	];
 
 	const artifactStore = getArtifactStore();
+
+	const dropzone = createArtifactDropzone();
 
 	let containerWidth = $state(0);
 	let imageAspectRatios = $state<Map<string, number>>(new Map());
@@ -159,10 +163,18 @@
 	class="flex-1 bg-lu-main-900 border border-lu-main-800 rounded-max-lg p-3 relative"
 	bind:clientWidth={containerWidth}
 	style="height: {layout.totalHeight + 24}px;"
+	ondragenter={(e) => dropzone.handleDragEnter(e)}
+	ondragleave={(e) => dropzone.handleDragLeave(e)}
+	ondragover={(e) => dropzone.handleDragOver(e)}
+	ondrop={(e) => dropzone.handleDrop(e)}
+	role="region"
+	aria-label="Artifacts dropzone"
 >
+	<DropzoneOverlay visible={dropzone.isDraggingOver} />
 	{#each layout.items as item (item.id)}
 		<div
-			class="absolute"
+			class="absolute transition-none"
+			class:pointer-events-none={dropzone.isDraggingOver}
 			style="transform: translate({item.x}px, {item.y}px); width: {item.width}px;"
 		>
 			{#if item.isDefault}

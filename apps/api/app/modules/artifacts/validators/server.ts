@@ -5,7 +5,7 @@ import { note, rawNote } from './base.js'
 export const createArtifactValidator = vine.create({
   note: note.clone(),
   rawNote: rawNote.clone(),
-  file: vine.file({ size: '100mb' }).optional(),
+  files: vine.array(vine.file({ size: '100mb' })).optional(),
 })
 
 export type CreateArtifact = Infer<typeof createArtifactValidator>
