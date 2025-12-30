@@ -4,14 +4,13 @@
 	import ArtifactDefault from '../artifacts/artifact-default.svelte';
 	import Artifact from '../artifacts/artifact.svelte';
 	import { SvelteMap } from 'svelte/reactivity';
-	import { onMount } from 'svelte';
 	import { createArtifactDropzone } from '$lib/composables/dropzone.svelte';
 	import DropzoneOverlay from '../dropzone/dropzone-overlay.svelte';
 
 	const GAP = 12;
 	const OUTER_GAPS = 24;
 	const BREAKPOINTS = [
-		{ minWidth: 1376, columns: 6 },
+		{ minWidth: 1350, columns: 6 },
 		{ minWidth: 1280, columns: 5 },
 		{ minWidth: 1024, columns: 4 },
 		{ minWidth: 768, columns: 3 },
@@ -23,7 +22,7 @@
 	const dropzone = createArtifactDropzone();
 
 	let containerWidth = $state(0);
-	let imageAspectRatios = $state<Map<string, number>>(new Map());
+	let imageAspectRatios = new SvelteMap<string, number>();
 
 	const columnCount = $derived(BREAKPOINTS.find((b) => containerWidth >= b.minWidth)?.columns ?? 2);
 	const columnWidth = $derived(
@@ -48,6 +47,7 @@
 			case 'video':
 				return imageAspectRatios.get(artifact.id) ?? 1;
 			case 'note':
+				return 65 / 45;
 			case 'quote':
 			case 'article':
 			case 'pdf':
@@ -145,12 +145,12 @@
 		const img = new Image();
 		img.onload = () => {
 			const aspectRatio = img.naturalWidth / img.naturalHeight;
-			imageAspectRatios = new SvelteMap(imageAspectRatios).set(artifact.id, aspectRatio);
+			imageAspectRatios.set(artifact.id, aspectRatio);
 		};
 		img.src = artifact.url;
 	}
 
-	onMount(() => {
+	$effect(() => {
 		for (const artifact of artifactStore.artifacts) {
 			if ((artifact.type === 'image' || artifact.type === 'video') && artifact.url) {
 				loadImageDimensions(artifact);
@@ -178,7 +178,7 @@
 			style="transform: translate({item.x}px, {item.y}px); width: {item.width}px;"
 		>
 			{#if item.isDefault}
-				<ArtifactDefault width={item.width} x={item.x} y={item.y} />
+				<ArtifactDefault />
 			{:else if item.artifact}
 				<Artifact {...item.artifact} width={item.width} x={item.x} y={item.y} />
 			{/if}

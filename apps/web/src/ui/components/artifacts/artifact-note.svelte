@@ -1,12 +1,14 @@
 <script lang="ts">
 	import { generateHTML } from '@tiptap/core';
-	import type { ArtifactProps } from './artifact.svelte';
 	import StarterKit from '@tiptap/starter-kit';
+	import type { ArtifactTransformer } from '@lumens/api/types';
 
-	const { note }: ArtifactProps = $props();
+	const { note }: ArtifactTransformer = $props();
 </script>
 
-<div class="w-full aspect-square bg-lu-main-800 rounded-max-lg px-4 py-3 border border-lu-main-700 relative overflow-hidden">
+<div
+	class="w-full aspect-65/45 bg-lu-main-800 rounded-max-lg px-4 py-3 border border-lu-main-700 relative overflow-hidden"
+>
 	{#if note}
 		{@html generateHTML(note, [StarterKit])}
 	{:else}

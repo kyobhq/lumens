@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { ArtifactProps } from './artifact.svelte';
+	import type { ArtifactTransformer } from '@lumens/api/types';
 
-	const { url }: ArtifactProps = $props();
+	const { url }: ArtifactTransformer = $props();
 </script>
 
 <div class="w-full rounded-max-lg overflow-hidden border border-lu-main-700">

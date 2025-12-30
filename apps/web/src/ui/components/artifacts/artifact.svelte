@@ -1,11 +1,3 @@
-<script lang="ts" module>
-	export interface ArtifactProps extends ArtifactTransformer {
-		width: number;
-		x: number;
-		y: number;
-	}
-</script>
-
 <script lang="ts">
 	import ArtifactNote from './artifact-note.svelte';
 	import ArtifactImage from './artifact-image.svelte';
@@ -16,7 +8,7 @@
 	import ArtifactArticle from './artifact-article.svelte';
 	import ArtifactPdf from './artifact-pdf.svelte';
 
-	const artifact: ArtifactProps = $props();
+	const artifact: ArtifactTransformer = $props();
 </script>
 
 {#if artifact.type === 'note'}
