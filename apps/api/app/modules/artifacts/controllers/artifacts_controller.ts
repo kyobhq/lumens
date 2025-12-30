@@ -16,8 +16,11 @@ export default class ArtifactsController {
 
   async createArtifact({ request, caller }: HttpContext) {
     const payload = await request.validateUsing(createArtifactValidator)
-    const artifact = await this.artifactsService.createArtifact(payload, caller)
+    const { artifacts, failures } = await this.artifactsService.createArtifact(payload, caller)
 
-    return ArtifactsTransformer.toJson(artifact)
+    return {
+      artifacts: artifacts.map(ArtifactsTransformer.toJson),
+      failures,
+    }
   }
 }
