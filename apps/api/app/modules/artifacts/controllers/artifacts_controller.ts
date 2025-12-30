@@ -8,6 +8,12 @@ import ArtifactsService from '../services/artifacts_service.js'
 export default class ArtifactsController {
   constructor(protected readonly artifactsService: ArtifactsService) {}
 
+  async getArtifacts({ caller }: HttpContext) {
+    const artifacts = await this.artifactsService.getArtifacts(caller)
+
+    return artifacts.map(ArtifactsTransformer.toJson)
+  }
+
   async createArtifact({ request, caller }: HttpContext) {
     const payload = await request.validateUsing(createArtifactValidator)
     const artifact = await this.artifactsService.createArtifact(payload, caller)

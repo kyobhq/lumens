@@ -38,6 +38,7 @@ router
 
     router
       .group(() => {
+        router.get('/', [ArtifactsController, 'getArtifacts'])
         router.post('/create', [ArtifactsController, 'createArtifact'])
       })
       .prefix('/artifacts')

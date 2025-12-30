@@ -2,6 +2,8 @@ import User from '#modules/users/models/user'
 import { cuid } from '@adonisjs/core/helpers'
 import Artifact from '../models/artifact.js'
 import { CreateArtifact } from '../validators/server.js'
+import { optimizeImage } from '../actions/optimize_image.js'
+import { getArtifactType, isOptimizableImage } from '../actions/get_artifact_type.js'
 
 export default class ArtifactsService {
   async createArtifact({ note, file, ...artifactPayload }: CreateArtifact, user: User) {
@@ -13,10 +15,17 @@ export default class ArtifactsService {
     let url: string | undefined
 
     if (file) {
-      const fileKey = `${cuid()}.${file.extname}`
-      await file.moveToDisk(fileKey)
-      url = file.meta.url
-      type = this.getArtifactType(file.extname ?? '')
+      const baseKey = cuid()
+      const extname = file.extname ?? ''
+      type = getArtifactType(extname)
+
+      if (isOptimizableImage(extname)) {
+        url = await optimizeImage(file, baseKey)
+      } else {
+        const fileKey = `${baseKey}.${extname}`
+        await file.moveToDisk(fileKey)
+        url = file.meta.url
+      }
     } else if (note) {
       type = 'note'
     }
@@ -31,17 +40,7 @@ export default class ArtifactsService {
     return artifact
   }
 
-  private getArtifactType(extname: string): Artifact['type'] {
-    const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg']
-    const videoExts = ['mp4', 'webm', 'mov', 'avi']
-    const pdfExts = ['pdf']
-
-    const ext = extname.toLowerCase().replace('.', '')
-
-    if (imageExts.includes(ext)) return 'image'
-    if (videoExts.includes(ext)) return 'video'
-    if (pdfExts.includes(ext)) return 'pdf'
-
-    return 'unknown'
+  async getArtifacts(user: User) {
+    return Artifact.query().where('user_id', user.id).orderBy('created_at', 'desc')
   }
 }
