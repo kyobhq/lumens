@@ -6,6 +6,7 @@
 	import { PressedKeys, watch } from 'runed';
 	import CommandApple from 'ui/icons/command-apple.svelte';
 	import { getArtifactStore } from '$lib/stores/artifacts.svelte';
+	import type { CreateArtifact } from '@lumens/api/validators/artifacts';
 
 	let editorState: { editor: Editor | null } = $state({ editor: null });
 	const keys = new PressedKeys();
@@ -17,9 +18,19 @@
 	watch(
 		() => isSaving,
 		() => {
-			if (isSaving) artifact.create({ note: editorState.editor?.getJSON() });
+			if (isSaving) saveNote();
 		}
 	);
+
+	function saveNote() {
+		const payload: CreateArtifact = {
+			note: editorState.editor?.getText(),
+			rawNote: editorState.editor?.getJSON()
+		};
+
+		artifact.create(payload);
+		editorState.editor?.commands.clearContent();
+	}
 </script>
 
 <div class="w-65 h-35 bg-lu-main-800 rounded-max-lg px-4 py-3 border border-lu-main-700 relative">
@@ -33,7 +44,7 @@
 		>
 			<Button.Root
 				class="bg-lu-accent-100 px-2 py-1 rounded-md text-sm w-full flex items-baseline-last justify-center gap-x-1.5"
-				onclick={() => artifact.create({ note: editorState.editor?.getJSON() })}
+				onclick={saveNote}
 			>
 				Press <span class="inline-flex items-center"><CommandApple class="size-3" />+Enter</span> to
 				save

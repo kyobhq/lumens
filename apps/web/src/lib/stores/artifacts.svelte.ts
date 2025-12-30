@@ -1,3 +1,4 @@
+import { tuyau } from '$lib/tuyau';
 import type { ArtifactTransformer } from '@lumens/api/types';
 import type { CreateArtifact } from '@lumens/api/validators/artifacts';
 import { getContext, setContext } from 'svelte';
@@ -5,8 +6,16 @@ import { getContext, setContext } from 'svelte';
 class ArtifactStore {
 	artifacts = $state<Array<ArtifactTransformer>>([]);
 
+	async get() {}
+
 	async create(payload: CreateArtifact, file?: File | null) {
-		console.log(payload);
+		const res = await tuyau.artifacts.create.$post({ ...payload, file: file });
+		if (res.error) {
+			console.error(res.error);
+			return;
+		}
+
+		this.artifacts.push(res.data);
 	}
 }
 
