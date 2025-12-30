@@ -6,7 +6,7 @@ export class ArtifactsTransformer {
       id: artifact.id,
       type: artifact.type,
       title: artifact.title,
-      note: artifact.note,
+      note: artifact.rawNote,
       colors: artifact.colors,
       tags: artifact.tags,
       url: artifact.url,

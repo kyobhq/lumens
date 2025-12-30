@@ -1,10 +1,11 @@
 import vine from '@vinejs/vine'
 import type { Infer } from '@vinejs/vine/types'
-import { note } from './base.js'
+import { note, rawNote } from './base.js'
 
 export const createArtifactValidator = vine.create({
   note: note.clone(),
-  file: vine.file({ size: '100mb' }),
+  rawNote: rawNote.clone(),
+  file: vine.file({ size: '100mb' }).optional(),
 })
 
 export type CreateArtifact = Infer<typeof createArtifactValidator>

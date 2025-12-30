@@ -19,7 +19,10 @@ export default class Artifact extends compose(BaseModel, CuidPk) {
   declare title: string | null
 
   @column()
-  declare note: any | null
+  declare note: string | null
+
+  @column()
+  declare rawNote: any | null
 
   @column()
   declare colors: string | null
