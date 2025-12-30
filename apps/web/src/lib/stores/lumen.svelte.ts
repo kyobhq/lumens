@@ -10,7 +10,8 @@ class LumenStore {
 	async get() {
 		const res = await tuyau.lumens.$get();
 		if (res.error) {
-			return res.error.value;
+			console.error(res.error);
+			return;
 		}
 
 		this.lumen = res.data;
