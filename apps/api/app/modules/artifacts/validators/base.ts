@@ -18,3 +18,13 @@ export const updateArtifactValidator = vine.create({
 })
 
 export type UpdateArtifact = Infer<typeof updateArtifactValidator>
+
+export type ArtifactType =
+  | 'default'
+  | 'article'
+  | 'image'
+  | 'pdf'
+  | 'video'
+  | 'note'
+  | 'quote'
+  | 'unknown'

@@ -35,6 +35,10 @@ type V1LumensCreatePost = {
   request: MakeTuyauRequest<InferInput<typeof import('../app/modules/lumens/validators/server.ts')['createLumenValidator']>>
   response: MakeNonSerializedTuyauResponse<import('../app/modules/lumens/controllers/lumens_controller.ts').default['createLumen'], true>
 }
+type V1ArtifactsCreatePost = {
+  request: MakeTuyauRequest<InferInput<typeof import('../app/modules/artifacts/validators/server.ts')['createArtifactValidator']>>
+  response: MakeNonSerializedTuyauResponse<import('../app/modules/artifacts/controllers/artifacts_controller.ts').default['createArtifact'], true>
+}
 export interface ApiDefinition {
   'v1': {
     'signup': {
@@ -72,6 +76,13 @@ export interface ApiDefinition {
         '$url': {
         };
         '$post': V1LumensCreatePost;
+      };
+    };
+    'artifacts': {
+      'create': {
+        '$url': {
+        };
+        '$post': V1ArtifactsCreatePost;
       };
     };
   };

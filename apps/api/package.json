@@ -19,7 +19,8 @@
     "./tuyau": "./.adonisjs/index.ts",
     "./types": "./app/types.ts",
     "./validators/users": "./app/modules/users/validators.ts",
-    "./validators/lumens": "./app/modules/lumens/validators/base.ts"
+    "./validators/lumens": "./app/modules/lumens/validators/base.ts",
+    "./validators/artifacts": "./app/modules/artifacts/validators/base.ts"
   },
   "imports": {
     "#modules/*": "./app/modules/*.js",
