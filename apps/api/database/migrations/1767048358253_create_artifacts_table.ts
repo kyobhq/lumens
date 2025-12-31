@@ -14,7 +14,6 @@ export default class extends BaseSchema {
         .inTable('users')
         .onDelete('CASCADE')
       table.string('type').notNullable()
-      table.string('title').nullable()
       table.text('note').nullable()
       table.jsonb('raw_note').nullable()
       table.string('colors').nullable()

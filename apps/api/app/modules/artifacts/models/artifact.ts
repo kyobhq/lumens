@@ -16,9 +16,6 @@ export default class Artifact extends compose(BaseModel, CuidPk) {
   declare type: 'article' | 'image' | 'pdf' | 'video' | 'note' | 'quote' | 'unknown'
 
   @column()
-  declare title: string | null
-
-  @column()
   declare note: string | null
 
   @column()

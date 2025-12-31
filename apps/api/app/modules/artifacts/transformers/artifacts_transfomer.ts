@@ -6,7 +6,6 @@ export class ArtifactsTransformer {
     return {
       id: artifact.id,
       type: artifact.type,
-      title: artifact.title,
       note: artifact.rawNote,
       colors: artifact.colors,
       tags: artifact.tags,
