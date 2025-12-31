@@ -1,9 +1,11 @@
-import { HttpContext } from '@adonisjs/core/http'
-import { createLumenValidator } from '../validators/server.js'
 import { inject } from '@adonisjs/core'
-import { LumensTransformer } from '../transformers/lumens_transfomer.js'
-import LumensService from '../services/lumens_service.js'
+import { HttpContext } from '@adonisjs/core/http'
 import Lumen from '../models/lumen.js'
+import LumensService from '../services/lumens_service.js'
+import { LumensTransformer } from '../transformers/lumens_transfomer.js'
+import { chatLumenValidator } from '../validators/base.js'
+import { createLumenValidator } from '../validators/server.js'
+import { MessagesTransformer } from '#modules/messages/transformers/messages_transformer'
 
 @inject()
 export default class LumensController {
@@ -18,5 +20,12 @@ export default class LumensController {
     const lumen = await this.lumensService.createLumen(payload, caller)
 
     return LumensTransformer.toJson(lumen)
+  }
+
+  async chat({ request, caller }: HttpContext) {
+    const payload = await request.validateUsing(chatLumenValidator)
+    const messages = await this.lumensService.chat(payload, caller)
+
+    return messages.map(MessagesTransformer.toJson)
   }
 }

@@ -1,15 +1,28 @@
-import type { Message } from '$lib/types';
+import { tuyau } from '$lib/tuyau';
+import type { ChatLumen } from '@lumens/api/validators/lumens';
+import type { MessageTransformer } from '@lumens/api/types';
 
 class MessageStore {
-	all = $state<Array<Message>>([]);
+	all = $state<MessageTransformer[]>([]);
 
-	add(message: Message) {
-		this.all.push(message);
+	async getAll() {
+		const res = await tuyau.messages.$get();
+		if (res.error) {
+			console.error(res.error);
+			return;
+		}
+
+		this.all = res.data;
 	}
 
-	remove(messageId: string) {
-		const idx = this.all.findIndex((m) => m.id === messageId);
-		if (idx > -1) this.all.splice(idx, 1);
+	async send(payload: ChatLumen) {
+		const res = await tuyau.lumens.chat.$post(payload, { timeout: 45_000 });
+		if (res.error) {
+			console.error(res.error);
+			return;
+		}
+
+		this.all.push(...res.data);
 	}
 }
 

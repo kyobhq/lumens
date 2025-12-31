@@ -106,3 +106,10 @@ body {
 		transparent 100%
 	);
 }
+
+.lumen-message {
+	a {
+		color: var(--color-sky-300);
+		text-decoration: underline;
+	}
+}

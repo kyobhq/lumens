@@ -7,7 +7,8 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.string('id').notNullable().primary()
       table.string('author_id').notNullable().index()
-      table.jsonb('content').notNullable()
+      table.string('content').notNullable()
+      table.jsonb('raw_content').notNullable()
       table.jsonb('mentions').notNullable().defaultTo('[]')
       table.jsonb('attachments').notNullable().defaultTo('[]')
 

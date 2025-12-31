@@ -12,6 +12,7 @@ import { middleware } from './kernel.js'
 const UsersController = () => import('#modules/users/controllers/users_controller')
 const LumensController = () => import('#modules/lumens/controllers/lumens_controller')
 const ArtifactsController = () => import('#modules/artifacts/controllers/artifacts_controller')
+const MessagesController = () => import('#modules/messages/controllers/messages_controller')
 
 router.get('/', async () => {
   return {
@@ -32,6 +33,7 @@ router
       .group(() => {
         router.get('/', [LumensController, 'getLumen'])
         router.post('/create', [LumensController, 'createLumen'])
+        router.post('/chat', [LumensController, 'chat'])
       })
       .prefix('/lumens')
       .use(middleware.auth())
@@ -42,6 +44,13 @@ router
         router.post('/create', [ArtifactsController, 'createArtifact'])
       })
       .prefix('/artifacts')
+      .use(middleware.auth())
+
+    router
+      .group(() => {
+        router.get('/', [MessagesController, 'getMessages'])
+      })
+      .prefix('/messages')
       .use(middleware.auth())
   })
   .prefix('/v1')

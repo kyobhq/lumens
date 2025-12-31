@@ -24,3 +24,16 @@ export const createLumenValidator = vine.create({
 createLumenValidator.messagesProvider = createLumenMessages
 
 export type CreateLumen = Infer<typeof createLumenValidator>
+
+const chatLumenMessages = new SimpleMessagesProvider({
+  'message.required': 'Message is required',
+  'message.maxLength': 'Message cannot exceed 4000 characters',
+})
+
+export const chatLumenValidator = vine.create({
+  content: vine.string().trim().maxLength(4000),
+  rawContent: vine.any(),
+})
+chatLumenValidator.messagesProvider = chatLumenMessages
+
+export type ChatLumen = Infer<typeof chatLumenValidator>

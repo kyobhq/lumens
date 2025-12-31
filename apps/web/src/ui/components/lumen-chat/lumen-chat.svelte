@@ -3,10 +3,12 @@
 	import { getAuthStore } from '$lib/stores/auth.svelte';
 	import { getLumenStore } from '$lib/stores/lumen.svelte';
 	import { messages } from '$lib/stores/messages.svelte';
+	import { generateLumenMessage } from '$lib/utils/lumen_message';
 	import { Editor, generateHTML, type JSONContent } from '@tiptap/core';
 	import StarterKit from '@tiptap/starter-kit';
 	import { Button } from 'bits-ui';
 	import { DateTime } from 'luxon';
+	import { onMount } from 'svelte';
 	import RichInput from 'ui/components/rich-input/rich-input.svelte';
 	import FilledPlus from 'ui/icons/filled-plus.svelte';
 
@@ -17,19 +19,13 @@
 
 	const passedTheOnboarding = $derived.by(() => {
 		if (!auth.user) return true;
-		return !auth.user.lumen_created;
+		return auth.user.lumen_created;
 	});
 
-	function sendMessage(content: JSONContent) {
+	function sendMessage(payload: { content: string; rawContent: JSONContent }) {
 		if (!passedTheOnboarding) return;
 
-		messages.add({
-			id: crypto.randomUUID(),
-			type: 'human',
-			username: 'You',
-			content,
-			timestamp: DateTime.now()
-		});
+		messages.send(payload);
 	}
 
 	function handleKeyDown(event: KeyboardEvent) {
@@ -40,8 +36,10 @@
 			const ed = editorState.editor;
 			if (!ed || ed.isEmpty) return false;
 
-			const content: JSONContent = ed.getJSON();
-			sendMessage(content);
+			const content = ed.getText();
+			const rawContent: JSONContent = ed.getJSON();
+			sendMessage({ content, rawContent });
+
 			ed?.commands.clearContent();
 
 			return true;
@@ -49,6 +47,10 @@
 
 		return false;
 	}
+
+	onMount(() => {
+		messages.getAll();
+	});
 </script>
 
 <div
@@ -74,14 +76,34 @@
 
 	<div class="flex flex-col gap-y-4 flex-1 justify-end px-6">
 		{#each messages.all as message (message.id)}
-			<div class="flex gap-x-2.5">
-				<div class="size-10 bg-lu-main-600 rounded-xl"></div>
-				<div class=" flex flex-col">
+			{@const username = message.author_id === auth.user?.id ? 'You' : lumen?.name}
+			{@const timestamp = DateTime.fromISO(message.timestamp!)}
+
+			<div class="flex gap-x-2.5 w-full">
+				{#if username === 'You'}
+					<div class="size-10 bg-lu-main-600 rounded-xl shrink-0"></div>
+				{:else if lumen}
+					<img
+						src={`http://localhost:3333${lumen.avatar}`}
+						alt=""
+						class="size-10 bg-lu-main-600 rounded-xl select-none shrink-0"
+					/>
+				{/if}
+
+				<div class="flex flex-col flex-1 overflow-hidden">
 					<div class="flex gap-x-1 items-baseline">
-						<p class="text-lu-accent-100 text-sm font-lu-medium-lg">{message.username}</p>
-						<p class="text-xs text-lu-main-500">- {message.timestamp.toFormat('hh:mm')}</p>
+						<p class="text-lu-accent-100 text-sm font-lu-medium-lg">{username}</p>
+						<p class="text-xs text-lu-main-500">- {timestamp.toFormat('hh:mm')}</p>
 					</div>
-					{@html generateHTML(message.content, [StarterKit])}
+					{#if username === 'You'}
+						<div class="wrap-break-word overflow-hidden">
+							{@html generateHTML(message.content, [StarterKit])}
+						</div>
+					{:else}
+						<div class="wrap-break-word overflow-hidden lumen-message">
+							{@html generateLumenMessage(message.content)}
+						</div>
+					{/if}
 				</div>
 			</div>
 		{/each}

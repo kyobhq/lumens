@@ -35,6 +35,10 @@ type V1LumensCreatePost = {
   request: MakeTuyauRequest<InferInput<typeof import('../app/modules/lumens/validators/server.ts')['createLumenValidator']>>
   response: MakeNonSerializedTuyauResponse<import('../app/modules/lumens/controllers/lumens_controller.ts').default['createLumen'], true>
 }
+type V1LumensChatPost = {
+  request: MakeTuyauRequest<InferInput<typeof import('../app/modules/lumens/validators/base.ts')['chatLumenValidator']>>
+  response: MakeNonSerializedTuyauResponse<import('../app/modules/lumens/controllers/lumens_controller.ts').default['chat'], true>
+}
 type V1ArtifactsGetHead = {
   request: unknown
   response: MakeNonSerializedTuyauResponse<import('../app/modules/artifacts/controllers/artifacts_controller.ts').default['getArtifacts'], false>
@@ -42,6 +46,10 @@ type V1ArtifactsGetHead = {
 type V1ArtifactsCreatePost = {
   request: MakeTuyauRequest<InferInput<typeof import('../app/modules/artifacts/validators/server.ts')['createArtifactValidator']>>
   response: MakeNonSerializedTuyauResponse<import('../app/modules/artifacts/controllers/artifacts_controller.ts').default['createArtifact'], true>
+}
+type V1MessagesGetHead = {
+  request: unknown
+  response: MakeNonSerializedTuyauResponse<import('../app/modules/messages/controllers/messages_controller.ts').default['getMessages'], false>
 }
 export interface ApiDefinition {
   'v1': {
@@ -81,6 +89,11 @@ export interface ApiDefinition {
         };
         '$post': V1LumensCreatePost;
       };
+      'chat': {
+        '$url': {
+        };
+        '$post': V1LumensChatPost;
+      };
     };
     'artifacts': {
       '$url': {
@@ -92,6 +105,12 @@ export interface ApiDefinition {
         };
         '$post': V1ArtifactsCreatePost;
       };
+    };
+    'messages': {
+      '$url': {
+      };
+      '$get': V1MessagesGetHead;
+      '$head': V1MessagesGetHead;
     };
   };
 }
