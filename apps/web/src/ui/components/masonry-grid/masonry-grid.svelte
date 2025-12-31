@@ -57,20 +57,6 @@
 		}
 	}
 
-	function getColumnSpan(artifact: ArtifactTransformer | null, cols: number): number {
-		if (!artifact) return 1; // ArtifactDefault always 1 column
-
-		if (artifact.type === 'image' || artifact.type === 'video') {
-			const aspectRatio = imageAspectRatios.get(artifact.id) ?? 1;
-			// Landscape (aspect ratio > 1) spans 2 columns, but only if we have at least 3 columns
-			if (aspectRatio > 1.1 && cols >= 3) {
-				return 2;
-			}
-		}
-
-		return 1;
-	}
-
 	const layout = $derived.by(() => {
 		if (containerWidth === 0) return { items: [] as PositionedItem[], totalHeight: 0 };
 
@@ -84,39 +70,22 @@
 		];
 
 		for (const { artifact, isDefault } of allItems) {
-			const colSpan = getColumnSpan(artifact, columnCount);
-			const itemWidth = colSpan * columnWidth + (colSpan - 1) * GAP;
+			const itemWidth = columnWidth;
 			const aspectRatio = getAspectRatio(artifact);
 			const height = itemWidth / aspectRatio;
 
-			// Find best column(s) for this item
+			// Find shortest column
 			let bestCol = 0;
-			if (colSpan === 1) {
-				// Find shortest column
-				let minHeight = columnHeights[0];
-				for (let i = 1; i < columnCount; i++) {
-					if (columnHeights[i] < minHeight) {
-						minHeight = columnHeights[i];
-						bestCol = i;
-					}
-				}
-			} else {
-				// Find best pair of adjacent columns (lowest max height)
-				let minMaxHeight = Infinity;
-				for (let i = 0; i <= columnCount - colSpan; i++) {
-					const maxHeight = Math.max(...columnHeights.slice(i, i + colSpan));
-					if (maxHeight < minMaxHeight) {
-						minMaxHeight = maxHeight;
-						bestCol = i;
-					}
+			let minHeight = columnHeights[0];
+			for (let i = 1; i < columnCount; i++) {
+				if (columnHeights[i] < minHeight) {
+					minHeight = columnHeights[i];
+					bestCol = i;
 				}
 			}
 
 			const x = bestCol * columnWidth + bestCol * GAP;
-			const y =
-				colSpan === 1
-					? columnHeights[bestCol]
-					: Math.max(...columnHeights.slice(bestCol, bestCol + colSpan));
+			const y = columnHeights[bestCol];
 
 			items.push({
 				id: isDefault ? '__default__' : artifact!.id,
@@ -128,10 +97,8 @@
 				isDefault
 			});
 
-			// Update column heights
-			for (let i = bestCol; i < bestCol + colSpan; i++) {
-				columnHeights[i] = y + height + GAP;
-			}
+			// Update column height
+			columnHeights[bestCol] = y + height + GAP;
 		}
 
 		const totalHeight = Math.max(...columnHeights) - GAP; // Remove trailing gap
