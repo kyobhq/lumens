@@ -22,10 +22,16 @@ export const AVAILABLE_TOOLS = ['web_search'] as const
 
 export type AvailableTool = (typeof AVAILABLE_TOOLS)[number]
 
+export const VERBOSITIES = ['brief', 'expanded'] as const
+
+export type Verbosity = (typeof VERBOSITIES)[number]
+
 export interface QueryAnalysis {
   topic: Topic
   difficulty: Difficulty
   required_tools: AvailableTool[]
+  verbosity: Verbosity
+  model: string
 }
 
 export interface ChatResponse {

@@ -1,10 +1,11 @@
 import Message from '#modules/messages/models/messages'
 import User from '#modules/users/models/user'
 import { cuid } from '@adonisjs/core/helpers'
-import ChatWithLumenAction from '../actions/chat_with_lumen.js'
 import Lumen from '../models/lumen.js'
 import type { ChatLumen, CreateLumen } from '../validators/server.js'
 import logger from '@adonisjs/core/services/logger'
+import AnalyzeQueryAction from '../actions/analyze_query.js'
+import GenerateResponseAction from '../actions/generate_response.js'
 
 export default class LumensService {
   static CONVERSATION_HISTORY_LIMIT = 10
@@ -31,15 +32,6 @@ export default class LumensService {
   async chat({ content, rawContent }: ChatLumen, user: User): Promise<Message[]> {
     const lumen = await Lumen.findByOrFail('creator_id', user.id)
 
-    const conversationHistory = await Message.query()
-      .whereIn('author_id', [user.id, lumen.id])
-      .orderBy('created_at', 'desc')
-      .limit(LumensService.CONVERSATION_HISTORY_LIMIT)
-      .exec()
-    conversationHistory.reverse()
-
-    logger.info({ history: conversationHistory }, 'Message history fetched')
-
     const userMessage = await Message.create({
       author_id: user.id,
       content,
@@ -50,11 +42,27 @@ export default class LumensService {
 
     logger.info({ userMessage: userMessage }, 'User message created')
 
-    const chatAction = new ChatWithLumenAction()
-    const response = await chatAction.execute({
+    const conversationHistory = await Message.query()
+      .whereIn('author_id', [user.id, lumen.id])
+      .orderBy('created_at', 'desc')
+      .limit(LumensService.CONVERSATION_HISTORY_LIMIT)
+      .exec()
+    conversationHistory.reverse()
+
+    logger.info({ history: conversationHistory }, 'Message history fetched')
+
+    const analyzeAction = new AnalyzeQueryAction()
+    const generateResponseAction = new GenerateResponseAction()
+
+    const analysis = await analyzeAction.execute(content, conversationHistory, lumen.id)
+    const response = await generateResponseAction.execute({
       query: content,
       lumen,
       conversationHistory,
+      difficulty: analysis.difficulty,
+      requiredTools: analysis.required_tools,
+      verbosity: analysis.verbosity,
+      model: analysis.model,
     })
 
     const lumenMessage = await Message.create({
