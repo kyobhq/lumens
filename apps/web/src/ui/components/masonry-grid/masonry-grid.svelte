@@ -10,7 +10,6 @@
 	const GAP = 12;
 	const OUTER_GAPS = 24;
 	const BREAKPOINTS = [
-		{ minWidth: 1350, columns: 6 },
 		{ minWidth: 1280, columns: 5 },
 		{ minWidth: 1024, columns: 4 },
 		{ minWidth: 768, columns: 3 },
