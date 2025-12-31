@@ -52,7 +52,7 @@
 </script>
 
 <div
-	class="flex flex-col justify-between h-full w-md bg-lu-main-900 border border-lu-main-800 rounded-max-lg"
+	class="flex flex-col justify-between h-full w-md bg-lu-main-900 border border-lu-main-750 rounded-max-lg shadow-border"
 >
 	{#if lumen}
 		<header

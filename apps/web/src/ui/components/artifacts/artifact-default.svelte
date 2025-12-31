@@ -34,9 +34,9 @@
 </script>
 
 <div
-	class="w-full aspect-65/45 bg-lu-main-800 rounded-max-lg px-4 py-3 border border-lu-main-700 relative"
+	class="w-full aspect-65/45 bg-lu-main-800 rounded-md px-4 py-3.25 border border-lu-main-700 relative hover:ring-2 transition ring-lu-main-600 hover:cursor-text focus-within:ring-2"
 >
-	<RichInput bind:editorState />
+	<RichInput bind:editorState class="after:content-normal after:inset-0 after:absolute" />
 
 	{#if !isEmpty}
 		<div

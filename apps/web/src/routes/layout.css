@@ -1,9 +1,10 @@
 @import 'tailwindcss';
 
 :root {
-	--lu-main-950: oklch(0.1785 0.0041 286);
+	--lu-main-950: oklch(0.1985 0.0041 286);
 	--lu-main-900: oklch(0.2011 0.0049 286);
 	--lu-main-800: oklch(0.2448 0.0056 286);
+	--lu-main-750: oklch(0.2663 0.0053 286);
 	--lu-main-700: oklch(0.2744 0.0073 286);
 	--lu-main-600: oklch(0.3317 0.0122 286);
 	--lu-main-500: oklch(0.4604 0.0161 286);
@@ -33,6 +34,7 @@
 	--color-lu-main-950: var(--lu-main-950);
 	--color-lu-main-900: var(--lu-main-900);
 	--color-lu-main-800: var(--lu-main-800);
+	--color-lu-main-750: var(--lu-main-750);
 	--color-lu-main-700: var(--lu-main-700);
 	--color-lu-main-600: var(--lu-main-600);
 	--color-lu-main-500: var(--lu-main-500);
@@ -54,12 +56,13 @@
 	--transition-quint: cubic-bezier(0.86, 0, 0.14, 1);
 
 	--inset-shadow-error: inset 0px 0px 0px 999px rgba(255, 100, 103, 0.15);
+	--shadow-border: 0px 0px 0px 0.75px rgb(0, 0, 0);
 }
 
 html,
 body {
 	color: var(--color-lu-main-100);
-	background-color: var(--color-lu-main-950);
+	background-color: var(--color-lu-main-900);
 	font-family: var(--font-inter);
 	letter-spacing: -0.02em;
 }

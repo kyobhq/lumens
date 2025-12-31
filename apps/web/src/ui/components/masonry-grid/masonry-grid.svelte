@@ -7,8 +7,8 @@
 	import { createArtifactDropzone } from '$lib/composables/dropzone.svelte';
 	import DropzoneOverlay from '../dropzone/dropzone-overlay.svelte';
 
-	const GAP = 12;
-	const OUTER_GAPS = 24;
+	const GAP = 14;
+	const OUTER_GAPS = 28;
 	const BREAKPOINTS = [
 		{ minWidth: 1280, columns: 5 },
 		{ minWidth: 1024, columns: 4 },
@@ -126,7 +126,7 @@
 </script>
 
 <div
-	class="flex-1 bg-lu-main-900 border border-lu-main-800 rounded-max-lg p-3 relative"
+	class="flex-1 bg-lu-main-900 border border-lu-main-750 rounded-max-lg p-3.5 relative shadow-border"
 	bind:clientWidth={containerWidth}
 	style="height: {layout.totalHeight + 24}px;"
 	ondragenter={(e) => dropzone.handleDragEnter(e)}
@@ -146,7 +146,7 @@
 			{#if item.isDefault}
 				<ArtifactDefault />
 			{:else if item.artifact}
-				<Artifact {...item.artifact} width={item.width} x={item.x} y={item.y} />
+				<Artifact {...item.artifact} />
 			{/if}
 		</div>
 	{/each}
