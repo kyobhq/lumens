@@ -18,9 +18,14 @@ export const DIFFICULTIES = ['easy', 'medium', 'hard', 'very_hard'] as const
 
 export type Difficulty = (typeof DIFFICULTIES)[number]
 
+export const AVAILABLE_TOOLS = ['web_search'] as const
+
+export type AvailableTool = (typeof AVAILABLE_TOOLS)[number]
+
 export interface QueryAnalysis {
   topic: Topic
   difficulty: Difficulty
+  required_tools: AvailableTool[]
 }
 
 export interface ChatResponse {

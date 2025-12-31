@@ -54,11 +54,11 @@
 </script>
 
 <div
-	class="flex flex-col justify-between h-full w-md bg-lu-main-900 border border-lu-main-750 rounded-max-lg shadow-border"
+	class="flex flex-col justify-between h-full w-md bg-lu-main-900 border border-lu-main-750 rounded-max-lg shadow-border overflow-auto relative"
 >
 	{#if lumen}
 		<header
-			class="flex flex-col items-center pt-6"
+			class="flex flex-col items-center pt-6 sticky top-0"
 			transition:fadeSlideBlur={{ blur: 4, duration: 500, y: 0 }}
 		>
 			<img
@@ -74,7 +74,7 @@
 		</header>
 	{/if}
 
-	<div class="flex flex-col gap-y-4 flex-1 justify-end px-6">
+	<div class="flex flex-col gap-y-4 flex-1 justify-end px-6 pb-4 pt-8">
 		{#each messages.all as message (message.id)}
 			{@const username = message.author_id === auth.user?.id ? 'You' : lumen?.name}
 			{@const timestamp = DateTime.fromISO(message.timestamp!)}
@@ -100,7 +100,7 @@
 							{@html generateHTML(message.content, [StarterKit])}
 						</div>
 					{:else}
-						<div class="wrap-break-word overflow-hidden lumen-message">
+						<div class="wrap-break-word overflow-hidden lumen-message space-y-4">
 							{@html generateLumenMessage(message.content)}
 						</div>
 					{/if}
@@ -109,7 +109,7 @@
 		{/each}
 	</div>
 
-	<div class="w-full px-3.5 py-4">
+	<div class="w-full px-3.5 pb-4 sticky bottom-0 bg-lu-main-900">
 		<RichInput
 			bind:editorState
 			class="bg-lu-main-800 border border-lu-main-700 flex gap-x-3 px-3.25 py-3 rounded-[14px] text-[0.9375rem] items-center overflow-hidden ring-0 focus-within:ring-2 ring-lu-main-600 transition duration-75"
