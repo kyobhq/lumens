@@ -56,7 +56,7 @@
 	--transition-quint: cubic-bezier(0.86, 0, 0.14, 1);
 
 	--inset-shadow-error: inset 0px 0px 0px 999px rgba(255, 100, 103, 0.15);
-	--shadow-border: 0px 0px 0px 0.75px rgb(0, 0, 0);
+	--shadow-border: 0px 0px 0px 0.75px rgba(0, 0, 0, 0.5);
 }
 
 html,
@@ -112,4 +112,22 @@ body {
 		color: var(--color-sky-300);
 		text-decoration: underline;
 	}
+}
+
+.mask-scroll {
+	mask-image: linear-gradient(
+		180deg,
+		#161618 10%,
+		rgba(22, 22, 24, 0.85) 35%,
+		rgba(22, 22, 24, 0.75) 50%,
+		rgba(22, 22, 24, 0.5) 75%,
+		rgba(22, 22, 24, 0) 100%
+	);
+}
+
+.liquid-glass {
+	background: rgba(228, 228, 231, 0.08);
+	border: 0.5px solid rgba(228, 228, 231, 0.12);
+	box-shadow: inset 0px 0px 2px rgba(228, 228, 231, 0.25);
+	backdrop-filter: blur(4px);
 }
