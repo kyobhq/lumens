@@ -51,7 +51,7 @@
 </script>
 
 <div
-	class="w-full max-w-136 absolute top-[45%] left-1/2 -translate-1/2"
+	class="w-full max-w-96 absolute bottom-34 left-1/2 -translate-x-1/2"
 	transition:fadeSlideBlur={{ duration: 800, y: 20 }}
 >
 	<Form of={form} onsubmit={handleSubmit}>
@@ -93,11 +93,11 @@
 			<TextField
 				{field}
 				label="Lumen Name"
-				placeholder="What will be your lumen's name?"
+				placeholder="Markus"
 				autocomplete="off"
 				required
 				hideLabel
-				class="bg-transparent rounded-none border-b border-b-lu-main-100/20 mix-blend-plus-lighter placeholder:text-lu-main-100/40 font-crimson italic text-4xl! focus-visible:ring-0 text-center"
+				class="bg-transparent rounded-none mix-blend-plus-lighter placeholder:text-lu-main-100/55 font-crimson italic text-4xl! focus-visible:ring-0 text-center"
 				data-1p-ignore
 			/>
 			{#if field.input.length > 0}

@@ -11,7 +11,7 @@
 			script.onload = () => {
 				window.UnicornStudio.addScene({
 					elementId: 'onboarding-background',
-					filePath: '/unicorn-studio/onboarding-background.json',
+					filePath: '/unicorn-studio/onboarding-background-v2.json',
 					scale: 1,
 					dpi: 1.5,
 					altText: 'Background scene',
@@ -23,7 +23,7 @@
 		} else {
 			window.UnicornStudio.addScene({
 				elementId: 'onboarding-background',
-				filePath: '/unicorn-studio/onboarding-background.json',
+				filePath: '/unicorn-studio/onboarding-background-v2.json',
 				scale: 1,
 				dpi: 1.5,
 				altText: 'Background scene',
@@ -40,4 +40,7 @@
 	});
 </script>
 
-<div id="onboarding-background" class="absolute inset-0 pointer-events-none opacity-75"></div>
+<div
+	id="onboarding-background"
+	class="absolute left-1/2 top-1/2 -translate-1/2 size-96 rounded-full"
+></div>
